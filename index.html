@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Márgenes Agrícolas 25/26</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:#ffffff; --s1:#f7f7f5; --s2:#f0f0ec; --s3:#e8e8e2;
@@ -15,7 +15,7 @@
   --cat-semi:#a07000; --cat-fung:#b03030; --cat-seg:#a05010; --cat-alq:#8a4830;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--tx);font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.55;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;line-height:1.55;height:100vh;overflow:hidden;display:flex;flex-direction:column}
 header{background:var(--s1);border-bottom:1px solid var(--bd);padding:0 16px;display:flex;align-items:stretch;flex-shrink:0;z-index:200}
 .header-brand{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 0;border-right:1px solid var(--bd);flex-shrink:0}
 header h1{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--gold)}
@@ -30,7 +30,7 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
 .tab-bar{position:absolute;bottom:0;left:0;right:0;height:2px}
 .tab-close{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--td);transition:background .1s,color .1s}
 .tab-close:hover{background:var(--s3);color:var(--neg)}
-.btn-new-tab{display:flex;align-items:center;gap:5px;padding:0 13px;color:var(--tm);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;transition:color .12s;border:none;background:none;border-left:1px solid var(--bd);border-right:1px solid var(--bd);white-space:nowrap;flex-shrink:0}
+.btn-new-tab{display:flex;align-items:center;gap:5px;padding:0 13px;color:var(--tm);font-family:'Inter',sans-serif;font-size:11px;cursor:pointer;transition:color .12s;border:none;background:none;border-left:1px solid var(--bd);border-right:1px solid var(--bd);white-space:nowrap;flex-shrink:0}
 .btn-new-tab:hover{color:var(--acc)}
 .header-badge{display:flex;align-items:center;padding:0 12px;font-size:10px;color:var(--td);white-space:nowrap;flex-shrink:0;border-left:1px solid var(--bd)}
 .app-body{display:grid;grid-template-columns:1fr 340px;flex:1;overflow:hidden}
@@ -43,7 +43,7 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
 .param-label{font-size:11px;color:var(--tm);flex:1}
 .inp-wrap{display:flex;align-items:center;gap:3px;background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:3px 6px;transition:border-color .15s}
 .inp-wrap:focus-within{border-color:var(--acc)}
-.inp-wrap input{background:none;border:none;outline:none;color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;width:62px;text-align:right}
+.inp-wrap input{background:none;border:none;outline:none;color:var(--tx);font-family:'Inter',sans-serif;font-size:12px;width:62px;text-align:right}
 .inp-unit{font-size:9px;color:var(--td);white-space:nowrap}
 .sec-title{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tm);margin-bottom:7px;margin-top:14px}
 .sec-title:first-child{margin-top:0}
@@ -54,12 +54,12 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
 .tbl tr:hover td{background:var(--s2)}
 .cat-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle;position:relative;top:-1px}
 .td-r{text-align:right}
-.cell-inp{background:var(--bg);border:1px solid transparent;border-radius:2px;padding:2px 4px;color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;text-align:right;width:72px;transition:border-color .15s}
+.cell-inp{background:var(--bg);border:1px solid transparent;border-radius:2px;padding:3px 5px;color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;text-align:right;width:72px;transition:border-color .15s}
 .cell-inp:focus{border-color:var(--acc);outline:none}
 .btn-del{background:none;border:none;cursor:pointer;color:var(--td);font-size:13px;padding:0 2px;transition:color .15s;line-height:1}
 .btn-del:hover{color:var(--neg)}
-.tbl .row-total td{background:var(--s3);border-top:1px solid var(--bd2);font-family:'Syne',sans-serif;font-weight:700;font-size:12px}
-.btn-add{background:none;border:1px dashed var(--bd2);border-radius:3px;color:var(--tm);font-family:'DM Mono',monospace;font-size:11px;padding:4px 12px;cursor:pointer;transition:border-color .15s,color .15s}
+.tbl .row-total td{background:var(--s3);border-top:1px solid var(--bd2);font-family:'Inter',sans-serif;font-weight:700;font-size:12px}
+.btn-add{background:none;border:1px dashed var(--bd2);border-radius:3px;color:var(--tm);font-family:'Inter',sans-serif;font-size:11px;padding:4px 12px;cursor:pointer;transition:border-color .15s,color .15s}
 .btn-add:hover{border-color:var(--acc);color:var(--acc)}
 .results{background:var(--s1);padding:10px 11px;overflow-y:auto;overflow-x:hidden;min-width:0;max-width:340px;border-left:1px solid var(--bd)}
 .res-title{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tm);margin-bottom:5px;padding-bottom:3px;border-bottom:1px solid var(--bd)}
@@ -67,13 +67,13 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
 .kpi-cards{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:5px}
 .kpi{background:var(--s2);border:1px solid var(--bd);border-radius:4px;padding:7px 9px;min-width:0;overflow:hidden}
 .kpi-label{font-size:8px;color:var(--tm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;font-family:'Syne',sans-serif;font-weight:700}
-.kpi-val{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;word-break:break-all}
+.kpi-val{font-family:'Inter',sans-serif;font-weight:700;font-size:15px;word-break:break-all;letter-spacing:-.02em}
 .sens-table{width:100%;border-collapse:collapse;font-size:10px;margin-bottom:4px}
 .sens-table th{padding:3px 4px;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm);background:var(--s2);border-bottom:1px solid var(--bd);text-align:center;white-space:nowrap}
 .sens-table td{padding:3px 4px;border-bottom:1px solid var(--bd);text-align:center;white-space:nowrap}
 .sens-table td:first-child{text-align:left;color:var(--tm);font-size:10px}
-.sens-table tr.s-mb td,.sens-table tr.s-mn td{font-family:'Syne',sans-serif;font-weight:700}
-.sens-table tr.s-mn td{font-size:12px}
+.sens-table tr.s-mb td,.sens-table tr.s-mn td{font-family:'Inter',sans-serif;font-weight:700}
+.sens-table tr.s-mn td{font-size:12px;font-weight:800}
 .sens-table .s-hl{font-weight:800}
 .gc-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--bd);font-size:10px}
 .gc-row .gl{color:var(--tm)}
@@ -98,7 +98,7 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
 .alq-table th{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);padding:3px 6px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
 .alq-table th.r{text-align:right}
 .alq-table td{padding:4px 6px;border-bottom:1px solid var(--bd);vertical-align:middle}
-.alq-table tr.alq-total td{background:var(--s3);font-family:'Syne',sans-serif;font-weight:700;border-top:1px solid var(--bd2)}
+.alq-table tr.alq-total td{background:var(--s3);font-family:'Inter',sans-serif;font-weight:700;border-top:1px solid var(--bd2)}
 .tipo-badge{display:inline-block;font-size:9px;font-family:'Syne',sans-serif;font-weight:700;padding:1px 6px;border-radius:10px;letter-spacing:.04em}
 .tipo-inmov{background:#fff3e0;color:#b06010;border:1px solid #e8c080}
 .tipo-cosecha{background:#e8f5e9;color:#2e7a40;border:1px solid #a8d8a8}
@@ -118,14 +118,14 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
 .hist-row .hv{font-family:'Syne',sans-serif;font-weight:700}
 .hist-card-footer{padding:8px 14px;background:var(--s2);display:flex;justify-content:space-between;align-items:center}
 .hist-mn-label{font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:'Syne',sans-serif;font-weight:700}
-.hist-mn-val{font-family:'Syne',sans-serif;font-weight:800;font-size:18px}
+.hist-mn-val{font-family:'Inter',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.02em}
 .hist-card-actions{display:flex;gap:6px}
 .btn-hist-del{background:none;border:none;cursor:pointer;color:var(--td);font-size:11px;padding:2px 6px;border-radius:2px}
 .btn-hist-del:hover{color:var(--neg)}
 /* INSUMOS PANEL */
 .ins-form-row{display:flex;flex-direction:column;gap:4px}
 .ins-form-row label{font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:'Syne',sans-serif;font-weight:700}
-.ins-form-row input,.ins-form-row select{background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;outline:none;width:100%}
+.ins-form-row input,.ins-form-row select{background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:'Inter',sans-serif;font-size:12px;outline:none;width:100%}
 .ins-form-row input:focus,.ins-form-row select:focus{border-color:var(--acc)}
 /* MODALS */
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;align-items:center;justify-content:center}
@@ -134,12 +134,12 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
 .modal h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:12px}
 .modal-row{margin-bottom:8px}
 .modal-row label{display:block;font-size:10px;color:var(--tm);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em}
-.modal-row input,.modal-row select{width:100%;background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;outline:none}
+.modal-row input,.modal-row select{width:100%;background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:'Inter',sans-serif;font-size:12px;outline:none}
 .modal-row input:focus,.modal-row select:focus{border-color:var(--acc)}
 .modal-btns{display:flex;gap:7px;margin-top:12px}
 .btn-prim{flex:1;background:var(--acc);color:#fff;border:none;border-radius:3px;padding:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;cursor:pointer}
 .btn-prim:hover{opacity:.88}
-.btn-sec{flex:1;background:none;color:var(--tm);border:1px solid var(--bd2);border-radius:3px;padding:8px;font-family:'DM Mono',monospace;font-size:12px;cursor:pointer}
+.btn-sec{flex:1;background:none;color:var(--tm);border:1px solid var(--bd2);border-radius:3px;padding:8px;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer}
 /* COLORS */
 .c-maiz{color:#b07800!important}.b-maiz{background:#b07800}
 .c-soja{color:#2e7a40!important}.b-soja{background:#2e7a40}
@@ -147,7 +147,7 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
 .c-girasol{color:#b04800!important}.b-girasol{background:#b04800}
 .c-custom{color:#6040a8!important}.b-custom{background:#6040a8}
 /* PERIOD INPUT */
-.period-inp{background:none;border:1px solid transparent;border-radius:3px;padding:2px 4px;color:var(--tx);font-family:'DM Mono',monospace;font-size:11px;width:88px;cursor:pointer;transition:border-color .15s}
+.period-inp{background:none;border:1px solid transparent;border-radius:3px;padding:2px 4px;color:var(--tx);font-family:'Inter',sans-serif;font-size:11px;width:88px;cursor:pointer;transition:border-color .15s}
 .period-inp:hover{border-color:var(--bd2)}
 .period-inp:focus{border-color:var(--acc);outline:none}
 /* BUTTONS */
@@ -207,7 +207,7 @@ header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:up
     <div class="modal-row"><label>Mes de egreso</label><input type="month" id="mf_periodo"></div>
     <div class="modal-row">
       <label>Producto / Labor</label>
-      <select id="mf_insumo" onchange="onSelectInsumo(this.value)" style="width:100%;background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:'DM Mono',monospace;font-size:12px;outline:none">
+      <select id="mf_insumo" onchange="onSelectInsumo(this.value)" style="width:100%;background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:'Inter',sans-serif;font-size:12px;outline:none">
         <option value="">— Seleccionar del listado —</option>
         <option value="__manual__">✎ Ingresar manualmente</option>
       </select>
@@ -541,46 +541,64 @@ function renderInsumosPanel() {
   document.getElementById('headerBadge').textContent = 'Precios de Insumos';
   res.style.display = 'none';
   main.style.gridColumn = '1 / -1';
-  main.className = 'main'; // usar .main para padding normal
+  main.className = 'main';
 
   var out = '';
-  out += '<div style="display:grid;grid-template-columns:1fr 320px;gap:20px;height:100%">';
 
-  // ── Columna izquierda: tabla de insumos
-  out += '<div style="display:flex;flex-direction:column;overflow:hidden">';
-  out += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
+  // ── Formulario arriba (horizontal compacto)
+  out += '<div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:14px 18px;margin-bottom:16px">';
+  out += '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">';
+  out += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:13px;color:var(--tx);flex-shrink:0" id="insFormTitle">Nuevo Insumo</div>';
+
+  // Categoría
+  out += '<div style="display:flex;flex-direction:column;gap:3px;min-width:140px">';
+  out += '<label style="font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:Syne,sans-serif;font-weight:700">Categoría</label>';
+  out += '<select id="mi_cat" style="background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:5px 8px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none">';
+  out += '<option>Herbicidas</option><option>Fertilizantes</option><option>Semillas</option><option>Fungi + Insec</option><option>Labores</option><option>Seguro</option><option>Otro</option>';
+  out += '</select></div>';
+
+  // Nombre
+  out += '<div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:180px">';
+  out += '<label style="font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:Syne,sans-serif;font-weight:700">Nombre</label>';
+  out += '<input type="text" id="mi_nombre" placeholder="Ej: Glifosato 54%" style="background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:5px 9px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none;width:100%">';
+  out += '</div>';
+
+  // Precio
+  out += '<div style="display:flex;flex-direction:column;gap:3px;min-width:100px">';
+  out += '<label style="font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:Syne,sans-serif;font-weight:700">Precio</label>';
+  out += '<input type="number" id="mi_precio" value="0" step="any" style="background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:5px 9px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none;width:100%">';
+  out += '</div>';
+
+  // Unidad
+  out += '<div style="display:flex;flex-direction:column;gap:3px;min-width:90px">';
+  out += '<label style="font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:Syne,sans-serif;font-weight:700">Unidad</label>';
+  out += '<input type="text" id="mi_unit" value="usd/lt" style="background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:5px 9px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none;width:100%">';
+  out += '</div>';
+
+  // Botones
+  out += '<div style="display:flex;gap:6px;align-self:flex-end;padding-bottom:1px">';
+  out += '<button class="btn-prim" onclick="saveInsumoPanel()" style="padding:6px 16px;font-size:11px">Guardar</button>';
+  out += '<button class="btn-sec" onclick="resetInsForm()" style="padding:6px 12px;font-size:11px">Limpiar</button>';
+  out += '</div>';
+
+  out += '</div>'; // flex row
+  out += '<div id="insFormDesc" style="font-size:10px;color:var(--td);margin-top:6px">Hacé click en un insumo del listado para editarlo.</div>';
+  out += '</div>'; // form card
+
+  // ── Buscador + tabla full width
+  out += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">';
   out += '<div class="sec-title" style="margin:0">// Listado de Insumos</div>';
   out += '<input type="text" id="searchInsumo" placeholder="Buscar..." oninput="filterInsPanel(this.value)" ';
-  out += 'style="flex:1;max-width:240px;background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:4px 9px;font-family:DM Mono,monospace;font-size:11px;color:var(--tx);outline:none">';
+  out += 'style="flex:1;max-width:300px;background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:4px 9px;font-family:Inter,sans-serif;font-size:12px;color:var(--tx);outline:none">';
+  out += '<span id="insCount" style="font-size:11px;color:var(--td)"></span>';
   out += '</div>';
 
-  // Tabla de insumos
-  out += '<div style="overflow-y:auto;flex:1">';
   out += '<div id="insumosList"></div>';
-  out += '</div></div>';
 
-  // ── Columna derecha: formulario
-  out += '<div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:18px 20px;height:fit-content;position:sticky;top:0">';
-  out += '<h2 id="insFormTitle" style="font-family:Syne,sans-serif;font-size:13px;font-weight:800;margin-bottom:4px;color:var(--tx)">Nuevo Insumo</h2>';
-  out += '<p id="insFormDesc" style="font-size:11px;color:var(--tm);margin-bottom:16px">Completá los datos. Click en un insumo para editarlo.</p>';
-  out += '<div style="display:flex;flex-direction:column;gap:10px">';
-  out += '<div class="ins-form-row"><label>Categoría</label>';
-  out += '<select id="mi_cat"><option>Herbicidas</option><option>Fertilizantes</option><option>Semillas</option><option>Fungi + Insec</option><option>Labores</option><option>Seguro</option><option>Otro</option></select></div>';
-  out += '<div class="ins-form-row"><label>Nombre</label><input type="text" id="mi_nombre" placeholder="Ej: Glifosato 54%"></div>';
-  out += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
-  out += '<div class="ins-form-row"><label>Precio</label><input type="number" id="mi_precio" step="any" value="0"></div>';
-  out += '<div class="ins-form-row"><label>Unidad</label><input type="text" id="mi_unit" value="usd/lt"></div>';
-  out += '</div>';
-  out += '</div>';
-  out += '<div style="display:flex;gap:8px;margin-top:14px">';
-  out += '<button class="btn-prim" onclick="saveInsumoPanel()">Guardar</button>';
-  out += '<button class="btn-sec" onclick="resetInsForm()">Limpiar</button>';
-  out += '</div></div>';
-
-  out += '</div>'; // end grid
   main.innerHTML = out;
   filterInsPanel('');
 }
+
 
 function filterInsPanel(filter) {
   var fl = filter.toLowerCase();
@@ -617,6 +635,8 @@ function filterInsPanel(filter) {
   });
   out += '</tbody></table>';
   list.innerHTML = out;
+  var cnt = document.getElementById('insCount');
+  if (cnt) cnt.textContent = filtered.length + ' insumos';
 }
 
 function loadInsForm(id) {
@@ -719,13 +739,14 @@ function renderMain() {
   out += '</div>';
 
   // Bloque Gastos Comerc.
-  out += '<div class="param-block"><div class="param-head">Gastos Comerc.</div>';
-  out += pr('p_fleteL','Flete Largo',p.fleteL,'USD/t','fleteL');
-  out += pr('p_fleteC','Flete Corto',p.fleteC,'USD/t','fleteC');
+  out += '<div class="param-block"><div class="param-head">Gastos Comercialización</div>';
+  out += pr('p_fleteL','Flete largo',p.fleteL,'USD/t','fleteL');
+  out += pr('p_fleteC','Flete corto',p.fleteC,'USD/t','fleteC');
   out += pr('p_parit','Paritaria',p.parit,'USD/t','parit');
   out += pr('p_camara','Gtos. Cámara',p.camara,'USD/t','camara');
-  out += pr('p_comision','Comisión vta',p.comision,'%','comision');
-  out += pr('p_sellado','Sellado 1116C',p.sellado,'%','sellado');
+  out += pr('p_comision','Comisión vta',p.comision,'% s/IB','comision');
+  out += pr('p_sellado','Sellado 1116C',p.sellado,'% s/IB','sellado');
+  out += pr('p_comisAlq','Comis. alquiler',p.comisAlq,'% s/alq','comisAlq');
   out += '</div>';
 
   // Bloque Comercialización
@@ -744,10 +765,7 @@ function renderMain() {
   out += '<button class="btn-add-alq" onclick="agregarCuota()">+ Cuota</button>';
   out += '</div>';
   out += '<div id="alqPanel"></div>';
-  out += '<div class="alq-comis">Comisión sobre alquiler: ';
-  out += '<div class="inp-wrap" style="display:inline-flex;margin-left:6px">';
-  out += '<input type="number" id="p_comisAlq" value="' + p.comisAlq + '" step="0.1" style="width:44px" oninput="syncParam(\'comisAlq\');recalc()">';
-  out += '<span class="inp-unit">%</span></div></div>';
+  // comisAlq se configura en el bloque Comercialización, no acá
   out += '</div>';
 
   // Tabla costos directos
@@ -1042,7 +1060,7 @@ function renderAlqPanel() {
     out += '<td class="td-r" style="color:var(--acc)">' + fN(usdTot) + '</td>';
 
     out += '<td><select style="font-size:10px;border:1px solid var(--bd2);border-radius:3px;';
-    out += 'padding:2px 4px;background:var(--bg);color:var(--tx);font-family:DM Mono,monospace;cursor:pointer" ';
+    out += 'padding:2px 4px;background:var(--bg);color:var(--tx);font-family:Inter,sans-serif;cursor:pointer" ';
     out += 'onchange="updateCuotaField(' + q.id + ',3,this.value)">';
     out += '<option value="inmov"'   + (q.tipo === 'inmov'    ? ' selected' : '') + '>Inmovilizado</option>';
     out += '<option value="cosecha"' + (q.tipo === 'cosecha'  ? ' selected' : '') + '>Cosecha</option>';
@@ -1219,19 +1237,19 @@ function recalc() {
   var out = '';
 
   // ── KPIs ──
-  out += '<div class="res-title">// KPIs — ' + r0 + ' t/ha</div>';
+  out += '<div class="res-title">// KPIs — ' + r0 + ' t/ha · ' + d.has + ' ha</div>';
   out += '<div class="kpi-cards">';
-  out += kpiCard('Ingreso Bruto',  'USD ' + fN(d.ingresoHa),  'gold');
-  out += kpiCard('Margen Bruto',   'USD ' + fN(d.margenBruto), d.margenBruto>=0?'pos':'neg');
-  out += kpiCard('Margen Neto',    'USD ' + fN(d.margenNeto),  d.margenNeto>=0?'pos':'neg');
-  out += kpiCard('ROI',            d.roiPct.toFixed(1) + '%',  d.roiPct>=0?'pos':'neg');
+  out += kpiCard2('Ingreso Bruto',  'USD ' + fN(d.ingresoHa) + '/ha',  'USD ' + fN(d.ingresoHa * d.has), 'gold');
+  out += kpiCard2('Margen Bruto',   'USD ' + fN(d.margenBruto) + '/ha', 'USD ' + fN(d.margenBruto * d.has), d.margenBruto>=0?'pos':'neg');
+  out += kpiCard2('Margen Neto',    'USD ' + fN(d.margenNeto) + '/ha',  'USD ' + fN(d.margenNeto * d.has),  d.margenNeto>=0?'pos':'neg');
+  out += kpiCard2('ROI',            d.roiPct.toFixed(1) + '%', 'Cap. inmov. USD ' + fN(d.capInmov), d.roiPct>=0?'pos':'neg');
   out += '</div>';
-  // Segunda fila KPIs
+  // Segunda fila
   out += '<div class="kpi-cards" style="margin-top:4px">';
-  out += kpiCard('Cap. Inmovilizado', 'USD ' + fN(d.capInmov),   '', 'color:var(--warn)');
-  out += kpiCard('Cap. Cosecha',      'USD ' + fN(d.capCosecha), '', 'color:var(--warn)');
-  out += kpiCard('MN Total',          'USD ' + fN(d.mnTotal),    d.mnTotal>=0?'pos':'neg');
-  out += kpiCard('Rto. Indiferencia', d.rindeIndiferencia.toFixed(2) + ' t/ha', d.rindeIndiferencia < r0 ?'pos':'neg');
+  out += kpiCard2('Cap. Inmovilizado', 'USD ' + fN(d.capInmov), 'Insumos + Alq. previo', '', 'color:var(--warn)');
+  out += kpiCard2('Cap. Cosecha',      'USD ' + fN(d.capCosecha), 'GC + Cos. + Alq. entrega', '', 'color:var(--warn)');
+  out += kpiCard2('Rto. Indiferencia', d.rindeIndiferencia.toFixed(2) + ' t/ha', 'Margen = 0 (actual: ' + r0 + ')', d.rindeIndiferencia < r0 ? 'pos':'neg');
+  out += kpiCard2('Gastos Totales/ha', 'USD ' + fN(d.gcTotal + d.cdTotal + d.cosecha + d.alqUSD), 'GC + CD + Cos. + Alq.', 'neg');
   out += '</div>';
 
   // ── Botón guardar ──
@@ -1345,6 +1363,15 @@ function kpiCard(label, val, cls, extraStyle) {
     + '</div>';
 }
 
+function kpiCard2(label, valMain, valSub, cls, extraStyle) {
+  var styleAttr = extraStyle ? ' style="' + extraStyle + '"' : '';
+  return '<div class="kpi">'
+    + '<div class="kpi-label">' + label + '</div>'
+    + '<div class="kpi-val ' + (cls||'') + '"' + styleAttr + '>' + valMain + '</div>'
+    + '<div style="font-size:10px;color:var(--tm);margin-top:3px;font-weight:600">' + valSub + '</div>'
+    + '</div>';
+}
+
 function gcRow(label, val) {
   return '<div class="gc-row gc-sub"><span class="gl">' + label + '</span><span class="gv neg">– ' + val + '</span></div>';
 }
@@ -1435,23 +1462,23 @@ function renderHistorial() {
             <div class="hist-row"><span class="hl">Precio</span><span class="hv">USD ${fN(h.params.precio)}/t</span></div>
             <div class="hist-row"><span class="hl">Rinde</span><span class="hv">${h.rinde} t/ha</span></div>
             <div class="hist-row"><span class="hl">Superficie</span><span class="hv">${h.params.has} ha</span></div>
-            <div class="hist-row"><span class="hl">Ingreso Bruto</span><span class="hv gold">USD ${fN(h.ingresoHa)}/ha</span></div>
-            <div class="hist-row"><span class="hl">Gastos Comerc.</span><span class="hv neg">– USD ${fN(h.gcTotal)}/ha</span></div>
-            <div class="hist-row"><span class="hl">Costos Directos</span><span class="hv neg">– USD ${fN(h.cdTotal)}/ha (${h.nLabores} ítems)</span></div>
-            <div class="hist-row"><span class="hl">Cosecha</span><span class="hv neg">– USD ${fN(h.cosecha)}/ha</span></div>
-            ${h.alqUSD>0?`<div class="hist-row"><span class="hl">Alquiler</span><span class="hv neg">– USD ${fN(h.alqUSD)}/ha</span></div>`:''}
+            <div class="hist-row"><span class="hl">Ingreso Bruto</span><span class="hv gold">USD ${fN((h.d||h).ingresoHa)}/ha</span></div>
+            <div class="hist-row"><span class="hl">Gastos Comerc.</span><span class="hv neg">– USD ${fN((h.d||h).gcTotal)}/ha</span></div>
+            <div class="hist-row"><span class="hl">Costos Directos</span><span class="hv neg">– USD ${fN((h.d||h).cdTotal)}/ha (${(h.labores||[]).length} ítems)</span></div>
+            <div class="hist-row"><span class="hl">Cosecha</span><span class="hv neg">– USD ${fN((h.d||h).cosecha)}/ha</span></div>
+            ${(h.d||h).alqUSD>0?`<div class="hist-row"><span class="hl">Alquiler</span><span class="hv neg">– USD ${fN(h.alqUSD)}/ha</span></div>`:''}
             <div class="hist-row"><span class="hl">Margen Bruto</span><span class="hv ${h.margenBruto>=0?'pos':'neg'}">USD ${fN(h.margenBruto)}/ha</span></div>
             ${h.nota?`<div style="margin-top:6px;font-size:10px;color:var(--tm);font-style:italic;border-top:1px solid var(--bd);padding-top:5px">💬 ${h.nota}</div>`:''}
           </div>
           <div class="hist-card-footer">
             <div>
               <div class="hist-mn-label">Margen Neto</div>
-              <div class="hist-mn-val ${h.margenNeto>=0?'pos':'neg'}">USD ${fN(h.margenNeto)}/ha</div>
+              <div class="hist-mn-val ${(h.d||h).margenNeto>=0?'pos':'neg'}">USD ${fN((h.d||h).margenNeto)}/ha</div>
             </div>
             <div style="text-align:right">
               <div style="font-size:9px;color:var(--td)">Total campo</div>
-              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;${h.margenNeto>=0?'color:var(--pos)':'color:var(--neg)'}">
-                USD ${fN(h.margenNeto * h.params.has)}
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;${(h.d||h).margenNeto>=0?'color:var(--pos)':'color:var(--neg)'}">
+                USD ${fN((h.d||h).margenNeto * h.params.has)}
               </div>
             </div>
           </div>
@@ -1500,12 +1527,11 @@ function imprimirMargen() {
 }
 
 function generarResumenHTML(snap) {
-  // Genera HTML de resumen para un snapshot del historial
-  var d = snap.d;
+  var d = snap.d || snap; // compatibilidad con snapshots viejos
   var p = snap.params;
   var MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   var fecha = snap.fecha;
-  var html = '<div style="font-family:DM Mono,monospace;font-size:12px;padding:20px;max-width:800px;margin:auto">';
+  var html = '<div style="font-family:Inter,sans-serif;font-size:12px;padding:20px;max-width:800px;margin:auto">';
   html += '<h1 style="font-family:Syne,sans-serif;font-size:20px;color:#b07800;margin-bottom:4px">MÁRGENES AGRÍCOLAS</h1>';
   html += '<div style="font-size:11px;color:#6a6a58;margin-bottom:16px">Campaña 25/26 · Generado: ' + fecha + '</div>';
   html += '<h2 style="font-family:Syne,sans-serif;font-size:15px;border-bottom:2px solid #deded6;padding-bottom:6px;margin-bottom:12px">' + snap.nombre + '</h2>';
@@ -1556,6 +1582,35 @@ function generarResumenHTML(snap) {
   html += '</table>';
   html += '</div>';
   return html;
+}
+
+
+function imprimirMargenActivo() {
+  var c = getCultivo();
+  if (!c) return;
+  var d = calcAt(c, c.params.rinde);
+  var snap = {
+    nombre: c.nombre + ' — ' + new Date().toLocaleDateString('es-AR'),
+    nota: '',
+    fecha: new Date().toLocaleString('es-AR'),
+    color: c.color,
+    dotColor: COLORES[c.color].dot,
+    cultivo: c.nombre,
+    params: c.params,
+    labores: c.labores,
+    cuotas: c.cuotas || [],
+    rinde: c.params.rinde,
+    d: d,
+  };
+  var w = window.open('', '_blank', 'width=900,height=700');
+  var html = '<!DOCTYPE html><html><head><title>' + snap.nombre + '</title>';
+  html += '<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">';
+  html += '</head><body style="background:#fff;margin:0">';
+  html += generarResumenHTML(snap);
+  html += '</body></html>';
+  w.document.write(html);
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 600);
 }
 
 function imprimirSnapshot(snapId) {
