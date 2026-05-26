@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Márgenes Agrícolas 25/26</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#ffffff; --s1:#f7f7f5; --s2:#f0f0ec; --s3:#e8e8e2;
+  --bd:#deded6; --bd2:#c8c8be;
+  --tx:#1a1a14; --tm:#6a6a58; --td:#a0a090;
+  --acc:#4a7a00; --gold:#b07800; --pos:#2e8a3a; --neg:#c0302a; --warn:#b06010;
+  --cat-herb:#2e6e84; --cat-lab:#6040a8; --cat-fert:#2e7a40;
+  --cat-semi:#a07000; --cat-fung:#b03030; --cat-seg:#a05010; --cat-alq:#8a4830;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',sans-serif;font-size:13px;line-height:1.55;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+header{background:var(--s1);border-bottom:1px solid var(--bd);padding:0 16px;display:flex;align-items:stretch;flex-shrink:0;z-index:200}
+.header-brand{display:flex;align-items:center;gap:10px;padding:8px 14px 8px 0;border-right:1px solid var(--bd);flex-shrink:0}
+header h1{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.02em;color:var(--gold)}
+header .sub{color:var(--tm);font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.cultivo-tabs{display:flex;align-items:stretch;flex:1;overflow-x:auto;min-width:0}
+.cultivo-tab{display:flex;align-items:center;gap:7px;padding:0 14px;cursor:pointer;border-right:1px solid var(--bd);font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--tm);letter-spacing:.04em;text-transform:uppercase;transition:background .12s,color .12s;position:relative;user-select:none;white-space:nowrap;flex-shrink:0}
+.cultivo-tab:hover{background:var(--s2);color:var(--tx)}
+.cultivo-tab.active{background:var(--bg);color:var(--tx)}
+.cultivo-tab.hist-tab{border-left:1px solid var(--bd);margin-left:auto;color:var(--tm);font-style:italic}
+.cultivo-tab.hist-tab.active{color:var(--tx)}
+.tab-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tab-bar{position:absolute;bottom:0;left:0;right:0;height:2px}
+.tab-close{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--td);transition:background .1s,color .1s}
+.tab-close:hover{background:var(--s3);color:var(--neg)}
+.btn-new-tab{display:flex;align-items:center;gap:5px;padding:0 13px;color:var(--tm);font-family:'Inter',sans-serif;font-size:11px;cursor:pointer;transition:color .12s;border:none;background:none;border-left:1px solid var(--bd);border-right:1px solid var(--bd);white-space:nowrap;flex-shrink:0}
+.btn-new-tab:hover{color:var(--acc)}
+.header-badge{display:flex;align-items:center;padding:0 12px;font-size:10px;color:var(--td);white-space:nowrap;flex-shrink:0;border-left:1px solid var(--bd)}
+.app-body{display:grid;grid-template-columns:1fr 340px;flex:1;overflow:hidden}
+.main{padding:14px 18px;overflow-y:auto}
+.params-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:14px}
+.param-block{background:var(--s2);border:1px solid var(--bd);border-radius:4px;padding:9px 10px}
+.param-head{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tm);margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--bd)}
+.param-row{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:4px}
+.param-row:last-child{margin-bottom:0}
+.param-label{font-size:11px;color:var(--tm);flex:1}
+.inp-wrap{display:flex;align-items:center;gap:3px;background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:3px 6px;transition:border-color .15s}
+.inp-wrap:focus-within{border-color:var(--acc)}
+.inp-wrap input{background:none;border:none;outline:none;color:var(--tx);font-family:'Inter',sans-serif;font-size:12px;width:62px;text-align:right}
+.inp-unit{font-size:9px;color:var(--td);white-space:nowrap}
+.sec-title{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tm);margin-bottom:7px;margin-top:14px}
+.sec-title:first-child{margin-top:0}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:7px}
+.tbl th{padding:5px 7px;text-align:left;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tm);background:var(--s2);border-bottom:1px solid var(--bd);white-space:nowrap}
+.tbl th.r{text-align:right}
+.tbl td{padding:4px 7px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.tbl tr:hover td{background:var(--s2)}
+.cat-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle;position:relative;top:-1px}
+.td-r{text-align:right}
+.cell-inp{background:var(--bg);border:1px solid transparent;border-radius:2px;padding:2px 4px;color:var(--tx);font-family:'Inter',sans-serif;font-size:12px;text-align:right;width:72px;transition:border-color .15s}
+.cell-inp:focus{border-color:var(--acc);outline:none}
+.btn-del{background:none;border:none;cursor:pointer;color:var(--td);font-size:13px;padding:0 2px;transition:color .15s;line-height:1}
+.btn-del:hover{color:var(--neg)}
+.tbl .row-total td{background:var(--s3);border-top:1px solid var(--bd2);font-family:'Inter',sans-serif;font-weight:700;font-size:12px}
+.btn-add{background:none;border:1px dashed var(--bd2);border-radius:3px;color:var(--tm);font-family:'Inter',sans-serif;font-size:11px;padding:4px 12px;cursor:pointer;transition:border-color .15s,color .15s}
+.btn-add:hover{border-color:var(--acc);color:var(--acc)}
+.results{background:var(--s1);padding:10px 11px;overflow-y:auto;overflow-x:hidden;min-width:0;max-width:340px;border-left:1px solid var(--bd)}
+.res-title{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tm);margin-bottom:5px;padding-bottom:3px;border-bottom:1px solid var(--bd)}
+.res-title:not(:first-child){margin-top:10px}
+.kpi-cards{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:5px}
+.kpi{background:var(--s2);border:1px solid var(--bd);border-radius:4px;padding:7px 9px;min-width:0;overflow:hidden}
+.kpi-label{font-size:8px;color:var(--tm);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;font-family:'Syne',sans-serif;font-weight:700}
+.kpi-val{font-family:'Inter',sans-serif;font-weight:800;font-size:15px;word-break:break-all;letter-spacing:-.02em}
+.sens-table{width:100%;border-collapse:collapse;font-size:10px;margin-bottom:4px}
+.sens-table th{padding:3px 4px;font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm);background:var(--s2);border-bottom:1px solid var(--bd);text-align:center;white-space:nowrap}
+.sens-table td{padding:3px 4px;border-bottom:1px solid var(--bd);text-align:center;white-space:nowrap}
+.sens-table td:first-child{text-align:left;color:var(--tm);font-size:10px}
+.sens-table tr.s-mb td,.sens-table tr.s-mn td{font-family:'Inter',sans-serif;font-weight:700}
+.sens-table tr.s-mn td{font-size:12px}
+.sens-table .s-hl{font-weight:800}
+.gc-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid var(--bd);font-size:10px}
+.gc-row .gl{color:var(--tm)}
+.gc-row.gc-sub{padding-left:6px;font-size:9px}
+.gc-row.gc-sub .gl,.gc-row.gc-sub .gv{color:var(--td)}
+.gc-row.gc-total .gl,.gc-row.gc-total .gv{font-family:'Inter',sans-serif;font-weight:700;color:var(--tx)}
+.bar-wrap{margin-bottom:5px}
+.bar-label{display:flex;justify-content:space-between;font-size:10px;margin-bottom:2px}
+.bar-track{height:8px;background:var(--s3);border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;transition:width .3s ease;border-radius:2px}
+.pos{color:var(--pos)} .neg{color:var(--neg)} .gold{color:var(--gold)}
+.btn-guardar{background:var(--acc);color:#fff;border:none;border-radius:3px;padding:5px 10px;font-family:'Syne',sans-serif;font-weight:700;font-size:10px;cursor:pointer;width:100%}
+.btn-guardar:hover{opacity:.88}
+/* ALQUILER */
+.alq-panel{background:var(--s2);border:1px solid var(--bd);border-radius:4px;padding:10px 12px;margin-bottom:14px}
+.alq-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bd)}
+.alq-head-title{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tm)}
+.btn-add-alq{background:none;border:1px solid var(--acc);border-radius:3px;color:var(--acc);font-family:'Syne',sans-serif;font-weight:700;font-size:10px;padding:3px 9px;cursor:pointer}
+.btn-add-alq:hover{background:var(--acc);color:#fff}
+.alq-empty{font-size:11px;color:var(--td);text-align:center;padding:8px 0}
+.alq-table{width:100%;border-collapse:collapse;font-size:11px}
+.alq-table th{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);padding:3px 6px;border-bottom:1px solid var(--bd);text-align:left;white-space:nowrap}
+.alq-table th.r{text-align:right}
+.alq-table td{padding:4px 6px;border-bottom:1px solid var(--bd);vertical-align:middle}
+.alq-table tr.alq-total td{background:var(--s3);font-family:'Inter',sans-serif;font-weight:700;border-top:1px solid var(--bd2)}
+.tipo-badge{display:inline-block;font-size:9px;font-family:'Syne',sans-serif;font-weight:700;padding:1px 6px;border-radius:10px;letter-spacing:.04em}
+.tipo-inmov{background:#fff3e0;color:#b06010;border:1px solid #e8c080}
+.tipo-cosecha{background:#e8f5e9;color:#2e7a40;border:1px solid #a8d8a8}
+.alq-comis{font-size:10px;color:var(--tm);margin-top:6px;padding-top:5px;border-top:1px solid var(--bd);display:flex;align-items:center;gap:6px}
+/* HISTORIAL */
+.hist-panel{padding:18px 24px;overflow-y:auto}
+.hist-toolbar{display:flex;gap:8px;align-items:center;margin-bottom:16px}
+.hist-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.hist-card{background:var(--s1);border:1px solid var(--bd);border-radius:6px;overflow:hidden}
+.hist-card-header{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
+.hist-card-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.hist-card-nombre{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;flex:1}
+.hist-card-fecha{font-size:9px;color:var(--td)}
+.hist-card-body{padding:10px 14px}
+.hist-row{display:flex;justify-content:space-between;font-size:11px;padding:3px 0;border-bottom:1px solid var(--bd)}
+.hist-row .hl{color:var(--tm)}
+.hist-row .hv{font-family:'Inter',sans-serif;font-weight:700}
+.hist-card-footer{padding:8px 14px;background:var(--s2);display:flex;justify-content:space-between;align-items:center}
+.hist-mn-label{font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:'Syne',sans-serif;font-weight:700}
+.hist-mn-val{font-family:'Inter',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.02em}
+.hist-card-actions{display:flex;gap:6px}
+.btn-hist-del{background:none;border:none;cursor:pointer;color:var(--td);font-size:11px;padding:2px 6px;border-radius:2px}
+.btn-hist-del:hover{color:var(--neg)}
+/* INSUMOS PANEL */
+.ins-form-row{display:flex;flex-direction:column;gap:4px}
+.ins-form-row label{font-size:10px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:'Syne',sans-serif;font-weight:700}
+.ins-form-row input,.ins-form-row select{background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:'Inter',sans-serif;font-size:12px;outline:none;width:100%}
+.ins-form-row input:focus,.ins-form-row select:focus{border-color:var(--acc)}
+/* MODALS */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:500;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--bg);border:1px solid var(--bd2);border-radius:6px;padding:18px 20px;width:340px;box-shadow:0 8px 32px rgba(0,0,0,.12)}
+.modal h3{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;margin-bottom:12px}
+.modal-row{margin-bottom:8px}
+.modal-row label{display:block;font-size:10px;color:var(--tm);margin-bottom:3px;text-transform:uppercase;letter-spacing:.08em}
+.modal-row input,.modal-row select{width:100%;background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:'Inter',sans-serif;font-size:12px;outline:none}
+.modal-row input:focus,.modal-row select:focus{border-color:var(--acc)}
+.modal-btns{display:flex;gap:7px;margin-top:12px}
+.btn-prim{flex:1;background:var(--acc);color:#fff;border:none;border-radius:3px;padding:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:12px;cursor:pointer}
+.btn-prim:hover{opacity:.88}
+.btn-sec{flex:1;background:none;color:var(--tm);border:1px solid var(--bd2);border-radius:3px;padding:8px;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer}
+/* COLORS */
+.c-maiz{color:#b07800!important}.b-maiz{background:#b07800}
+.c-soja{color:#2e7a40!important}.b-soja{background:#2e7a40}
+.c-trigo{color:#7a4818!important}.b-trigo{background:#7a4818}
+.c-girasol{color:#b04800!important}.b-girasol{background:#b04800}
+.c-custom{color:#6040a8!important}.b-custom{background:#6040a8}
+/* PERIOD INPUT */
+.period-inp{background:none;border:1px solid transparent;border-radius:3px;padding:2px 4px;color:var(--tx);font-family:'Inter',sans-serif;font-size:11px;width:88px;cursor:pointer;transition:border-color .15s}
+.period-inp:hover{border-color:var(--bd2)}
+.period-inp:focus{border-color:var(--acc);outline:none}
+/* BUTTONS */
+.btn-usar-ins{color:var(--acc);font-weight:700;font-size:10px;background:none;border:1px solid var(--acc);border-radius:3px;padding:2px 7px;letter-spacing:.04em;font-family:'Syne',sans-serif;cursor:pointer}
+.btn-usar-ins:hover{background:var(--acc);color:#fff}
+.btn-del-ins{background:none;border:none;cursor:pointer;color:var(--td);font-size:13px;padding:0 3px;line-height:1}
+.btn-del-ins:hover{color:var(--neg)}
+@media(max-width:700px){
+  .app-body{grid-template-columns:1fr;grid-template-rows:1fr auto}
+  .results{border-left:none;border-top:1px solid var(--bd);max-height:320px;max-width:100%}
+  .kpi-cards{grid-template-columns:repeat(2,1fr)}
+  .params-grid{grid-template-columns:1fr}
+  .cultivo-tabs{overflow-x:auto}
+  .header-brand{display:none}
+}
+
+.tab-dup{width:16px;height:16px;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;color:var(--td);cursor:pointer;transition:color .1s,background .1s;margin-left:1px}
+.tab-dup:hover{color:var(--acc);background:var(--s3)}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-brand"><div><h1>MÁRGENES</h1><span class="sub">Campaña 25/26</span></div></div>
+  <div class="cultivo-tabs" id="cultivoTabs"></div>
+  <button class="btn-new-tab" onclick="openNewCultivoModal()">＋ Cultivo</button>
+  <button class="btn-new-tab" id="btnInsumos" onclick="switchInsumos()" style="border-right:1px solid var(--bd)">🧪 Insumos</button>
+  <div class="header-badge" id="headerBadge">—</div>
+  <button class="btn-new-tab" onclick="limpiarEstado()" title="Borrar todos los datos" style="color:var(--neg);font-size:10px;border-left:1px solid var(--bd)">⚠ Reset</button>
+</header>
+<div class="app-body" id="appBody">
+  <main class="main" id="mainPanel"></main>
+  <aside class="results" id="resultsPanel"></aside>
+</div>
+<div class="modal-bg" id="modalFila"><div class="modal" style="width:380px"><h3>Agregar Producto / Labor</h3><div class="modal-row"><label>Mes de egreso</label><input type="month" id="mf_periodo"></div><div class="modal-row"><label>Producto / Labor</label><select id="mf_insumo" onchange="onSelectInsumo(this.value)" style="width:100%;background:var(--s1);border:1px solid var(--bd2);border-radius:3px;padding:6px 9px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none"><option value="">— Seleccionar del listado —</option><option value="__manual__">✎ Ingresar manualmente</option></select></div><div class="modal-row" id="mf_nombre_row" style="display:none"><label>Nombre manual</label><input type="text" id="mf_nombre" placeholder="Nombre del producto/labor"></div><div class="modal-row"><label>Categoría</label><select id="mf_cat"><option>Herbicidas</option><option>Fertilizantes</option><option>Labores</option><option>Semillas</option><option>Fungi + Insec</option><option>Seguro</option><option>Alquiler</option><option>Otro</option></select></div><div class="modal-row"><label>Dosis / ha</label><input type="number" id="mf_dosis" value="1" step="any"></div><div class="modal-row"><label>USD / und <span id="mf_precio_hint" style="font-size:9px;color:var(--acc);margin-left:4px"></span></label><input type="number" id="mf_precio" value="0" step="any"></div><div class="modal-btns"><button class="btn-sec" onclick="closeModal('modalFila')">Cancelar</button><button class="btn-prim" onclick="addFila()">Agregar</button></div></div></div>
+<div class="modal-bg" id="modalCultivo"><div class="modal"><h3>Nuevo Cultivo</h3><div class="modal-row"><label>Nombre</label><input type="text" id="mc_nombre" placeholder="Ej: Soja 1ra, Trigo..."></div><div class="modal-row"><label>Color</label><select id="mc_color"><option value="maiz">Maíz (amarillo)</option><option value="soja">Soja (verde)</option><option value="trigo">Trigo (marrón)</option><option value="girasol">Girasol (naranja)</option><option value="custom">Otro (violeta)</option></select></div><div class="modal-row"><label>Precio (USD/t)</label><input type="number" id="mc_precio" value="170" step="1"></div><div class="modal-row"><label>Rinde base (t/ha)</label><input type="number" id="mc_rinde" value="3" step="0.5"></div><div class="modal-btns"><button class="btn-sec" onclick="closeModal('modalCultivo')">Cancelar</button><button class="btn-prim" onclick="crearCultivo()">Crear</button></div></div></div>
+<div class="modal-bg" id="modalDup"><div class="modal"><h3>Duplicar Cultivo</h3><div class="modal-row"><label>Nombre del nuevo cultivo</label><input type="text" id="dup_nombre" placeholder="Ej: Soja — Escenario B"></div><div class="modal-row"><label>Color</label><select id="dup_color"><option value="maiz">Maíz (amarillo)</option><option value="soja">Soja (verde)</option><option value="trigo">Trigo (marrón)</option><option value="girasol">Girasol (naranja)</option><option value="custom">Otro (violeta)</option></select></div><div class="modal-btns"><button class="btn-sec" onclick="closeModal('modalDup')">Cancelar</button><button class="btn-prim" onclick="confirmarDup()">Duplicar</button></div></div></div>
+<div class="modal-bg" id="modalInsumo"><div class="modal"><h3 id="miTitle">Nuevo Insumo</h3><div class="modal-row"><label>Categoría</label><select id="mi_cat"><option>Herbicidas</option><option>Fertilizantes</option><option>Semillas</option><option>Fungi + Insec</option><option>Labores</option><option>Seguro</option><option>Otro</option></select></div><div class="modal-row"><label>Nombre</label><input type="text" id="mi_nombre" placeholder="Nombre del producto"></div><div class="modal-row"><label>Precio</label><input type="number" id="mi_precio" step="any" value="0"></div><div class="modal-row"><label>Unidad</label><input type="text" id="mi_unit" value="usd/lt"></div><div class="modal-btns"><button class="btn-sec" onclick="closeModal('modalInsumo')">Cancelar</button><button class="btn-prim" onclick="saveInsumo()">Guardar</button></div></div></div>
+<div class="modal-bg" id="modalGuardar"><div class="modal"><h3>Guardar en Historial</h3><div class="modal-row"><label>Nombre del escenario</label><input type="text" id="mg_nombre" placeholder="Ej: Maíz Tardío — Base Jul 25"></div><div class="modal-row"><label>Nota (opcional)</label><input type="text" id="mg_nota" placeholder="Ej: Precio optimista, rinde conservador"></div><div class="modal-btns"><button class="btn-sec" onclick="closeModal('modalGuardar')">Cancelar</button><button class="btn-prim" onclick="confirmarGuardar()">Guardar</button></div></div></div>
+<script>
+// ══════════════════════════════════
+// INSUMOS
+// ══════════════════════════════════
+let INSUMOS = [
+  {id:1, cat:'Herbicidas',    name:'2 4-D Etilhexilico',          price:4.4,   unit:'usd/lt'},
+  {id:2, cat:'Herbicidas',    name:'Acuron',                       price:40,    unit:'usd/lt'},
+  {id:3, cat:'Herbicidas',    name:'Acuron Pack',                  price:41.37, unit:'usd/lt'},
+  {id:4, cat:'Herbicidas',    name:'Atrazina 90',                  price:6.6,   unit:'usd/lt'},
+  {id:5, cat:'Herbicidas',    name:'Cletodim 24%',                 price:6.55,  unit:'usd/lt'},
+  {id:6, cat:'Herbicidas',    name:'Dicamba',                      price:6,     unit:'usd/lt'},
+  {id:7, cat:'Herbicidas',    name:'Diclosulam 84%',               price:215,   unit:'usd/kg'},
+  {id:8, cat:'Herbicidas',    name:'Finesse',                      price:314,   unit:'usd/kg'},
+  {id:9, cat:'Herbicidas',    name:'Flumioxazin 48%',              price:48.47, unit:'usd/lt'},
+  {id:10,cat:'Herbicidas',    name:'Glifosato 54%',                price:3.85,  unit:'usd/lt'},
+  {id:11,cat:'Herbicidas',    name:'Glufosinato de Amonio',        price:8,     unit:'usd/lt'},
+  {id:12,cat:'Herbicidas',    name:'Haloxifop 54%',                price:26,    unit:'usd/lt'},
+  {id:13,cat:'Herbicidas',    name:'Heat',                         price:335,   unit:'usd/kg'},
+  {id:14,cat:'Herbicidas',    name:'IMAZETAPIR 10%',               price:25,    unit:'usd/lt'},
+  {id:15,cat:'Herbicidas',    name:'Metribuzin',                   price:15,    unit:'usd/kg'},
+  {id:16,cat:'Herbicidas',    name:'Nicosulfuron 24%',             price:112,   unit:'usd/lt'},
+  {id:17,cat:'Herbicidas',    name:'Paraquat 27,8%',               price:8,     unit:'usd/lt'},
+  {id:18,cat:'Herbicidas',    name:'Piroxasulfona 48%',            price:120,   unit:'usd/lt'},
+  {id:19,cat:'Herbicidas',    name:'S-metolacloro',                price:9.8,   unit:'usd/lt'},
+  {id:20,cat:'Herbicidas',    name:'Aceite metilado',              price:2.5,   unit:'usd/lt'},
+  {id:21,cat:'Herbicidas',    name:'Coady. Siliconado',            price:30,    unit:'usd/lt'},
+  {id:22,cat:'Herbicidas',    name:'Coady. Siliconado + Metilado', price:16,    unit:'usd/lt'},
+  {id:23,cat:'Herbicidas',    name:'Sulfato de Amonio',            price:10,    unit:'usd/kg'},
+  {id:24,cat:'Fertilizantes', name:'MAP',                          price:1.03,  unit:'usd/kg'},
+  {id:25,cat:'Fertilizantes', name:'Urea',                         price:0.686, unit:'usd/kg'},
+  {id:26,cat:'Fertilizantes', name:'Urea Azufrada',                price:0.6,   unit:'usd/kg'},
+  {id:27,cat:'Fertilizantes', name:'Solmix',                       price:0.65,  unit:'usd/lt'},
+  {id:28,cat:'Fertilizantes', name:'Solmix ZN',                    price:0.7,   unit:'usd/lt'},
+  {id:29,cat:'Semillas',      name:'Semilla Maiz',                 price:140,   unit:'usd/bolsa'},
+  {id:30,cat:'Semillas',      name:'Semilla Soja',                 price:0.78,  unit:'usd/kg'},
+  {id:31,cat:'Semillas',      name:'Semilla Soja Curada',          price:0.85,  unit:'usd/kg'},
+  {id:32,cat:'Semillas',      name:'Semilla Trigo Pan Curada',     price:0.625, unit:'usd/kg'},
+  {id:33,cat:'Semillas',      name:'Semilla Girasol',              price:220,   unit:'usd/bolsa'},
+  {id:34,cat:'Labores',       name:'Aplicacion Terrestre',         price:2,     unit:'usd/ha'},
+  {id:35,cat:'Labores',       name:'Siembra Directa c/ fert.',     price:58,    unit:'usd/ha'},
+  {id:36,cat:'Labores',       name:'Fertilizacion al voleo',       price:10,    unit:'usd/ha'},
+  {id:37,cat:'Labores',       name:'Análisis de Suelos',           price:2,     unit:'usd/ha'},
+  {id:38,cat:'Seguro',        name:'Seguro Agrícola',              price:15,    unit:'usd/ha'},
+];
+let insNextId = 39;
+let editingInsId = null;
+
+const CAT_COLOR = {
+  'Herbicidas':'var(--cat-herb)','Fertilizantes':'var(--cat-fert)','Labores':'var(--cat-lab)',
+  'Semillas':'var(--cat-semi)','Fungi + Insec':'var(--cat-fung)','Seguro':'var(--cat-seg)',
+  'Alquiler':'var(--cat-alq)','Otro':'var(--tm)',
+};
+
+function renderInsumos(filter='') {
+  const fl = filter.toLowerCase();
+  const list = document.getElementById('insumosList');
+  if (!list) return; // panel not active
+  const cats = {};
+  INSUMOS.forEach(ins => {
+    if (fl && !ins.name.toLowerCase().includes(fl) && !ins.cat.toLowerCase().includes(fl)) return;
+    if (!cats[ins.cat]) cats[ins.cat] = [];
+    cats[ins.cat].push(ins);
+  });
+  if (!Object.keys(cats).length) {
+    list.innerHTML = `<div style="padding:16px;text-align:center;color:var(--td);font-size:11px">Sin resultados</div>`;
+    return;
+  }
+  list.innerHTML = Object.entries(cats).map(([cat, items]) => `
+    <div>
+      <div class="cat-label">${cat}</div>
+      ${items.map(ins => `
+        <div class="insumo-row">
+          <div class="insumo-use" onclick="useInsumo(${ins.id})" title="Agregar al cultivo">
+            <span class="insumo-name">${ins.name}</span>
+            <span class="insumo-price">${ins.price}</span>
+            <span class="insumo-unit">${ins.unit}</span>
+          </div>
+          <button class="btn-edit-ins" onclick="openInsumoModal(${ins.id})" title="Editar">✎</button>
+          <button class="btn-del-ins" onclick="deleteInsumo(${ins.id})" title="Eliminar">×</button>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function openInsumoModal(id) {
+  editingInsId = id;
+  document.getElementById('miTitle').textContent = id ? 'Editar Insumo' : 'Nuevo Insumo';
+  if (id) {
+    const ins = INSUMOS.find(x => x.id === id);
+    document.getElementById('mi_cat').value    = ins.cat;
+    document.getElementById('mi_nombre').value = ins.name;
+    document.getElementById('mi_precio').value = ins.price;
+    document.getElementById('mi_unit').value   = ins.unit;
+  } else {
+    document.getElementById('mi_cat').value    = 'Herbicidas';
+    document.getElementById('mi_nombre').value = '';
+    document.getElementById('mi_precio').value = 0;
+    document.getElementById('mi_unit').value   = 'usd/lt';
+  }
+  openModal('modalInsumo');
+}
+
+function saveInsumo() {
+  const cat   = document.getElementById('mi_cat').value;
+  const name  = document.getElementById('mi_nombre').value.trim();
+  const price = parseFloat(document.getElementById('mi_precio').value) || 0;
+  const unit  = document.getElementById('mi_unit').value.trim() || 'usd/und';
+  if (!name) { alert('Ingresá un nombre'); return; }
+  if (editingInsId) {
+    Object.assign(INSUMOS.find(x => x.id === editingInsId), {cat, name, price, unit});
+  } else {
+    INSUMOS.push({id: insNextId++, cat, name, price, unit});
+  }
+  closeModal('modalInsumo');
+  var si = document.getElementById('searchInsumo'); if (si) renderInsumos(si.value);
+}
+
+function deleteInsumo(id) {
+  if (!confirm('¿Eliminar del listado?')) return;
+  INSUMOS = INSUMOS.filter(function(x){ return x.id !== id; });
+  if (document.getElementById('insumosList')) filterInsPanel('');
+  guardarEstado();
+}
+
+function useInsumo(id) {
+  var ins = INSUMOS.find(function(x){ return x.id === id; });
+  if (!ins) return;
+  if (!activoId) { alert('Creá un cultivo primero desde + Cultivo'); return; }
+  if (vistaActiva === 'historial') { alert('Seleccioná un cultivo primero'); return; }
+  // Abrir modal directamente — sin cambiar de vista (el modal es estático en el HTML)
+  abrirModalConInsumo(ins);
+}
+
+function abrirModalConInsumo(ins) {
+  poblarSelectInsumos(ins.id);
+  document.getElementById('mf_nombre_row').style.display = 'none';
+  document.getElementById('mf_precio').value  = ins.price;
+  document.getElementById('mf_cat').value     = ins.cat;
+  document.getElementById('mf_periodo').value = '';
+  document.getElementById('mf_dosis').value   = 1;
+  var hint = document.getElementById('mf_precio_hint');
+  if (hint) hint.textContent = '← precio del listado';
+  openModal('modalFila');
+}
+
+
+// ══════════════════════════════════
+// CULTIVOS
+// ══════════════════════════════════
+const COLORES = {
+  maiz:    {dot:'#b07800', cls:'c-maiz',    bcls:'b-maiz'},
+  soja:    {dot:'#2e7a40', cls:'c-soja',    bcls:'b-soja'},
+  trigo:   {dot:'#7a4818', cls:'c-trigo',   bcls:'b-trigo'},
+  girasol: {dot:'#b04800', cls:'c-girasol', bcls:'b-girasol'},
+  custom:  {dot:'#6040a8', cls:'c-custom',  bcls:'b-custom'},
+};
+
+let cultivos = [];
+let activoId = null;
+let vistaActiva = 'cultivo'; // 'cultivo' | 'historial'
+let cId = 1, lId = 100, qId = 200;
+
+// Historial de márgenes guardados
+let historial = [];
+let hId = 1;
+
+const MAIZ_LAB = [
+  {periodo:'Agosto',         cat:'Herbicidas',    nombre:'Aceite metilado',              dosis:0.25,  precio:2.5},
+  {periodo:'Agosto',         cat:'Herbicidas',    nombre:'Glifosato 54%',                dosis:2.6,   precio:3.85},
+  {periodo:'Agosto',         cat:'Herbicidas',    nombre:'2 4-D Etilhexilico',           dosis:1,     precio:4.4},
+  {periodo:'Agosto',         cat:'Labores',       nombre:'Aplicacion Terrestre',         dosis:1,     precio:2},
+  {periodo:'Sept. Mediados', cat:'Herbicidas',    nombre:'Coady. Siliconado',            dosis:0.025, precio:30},
+  {periodo:'Sept. Mediados', cat:'Herbicidas',    nombre:'Atrazina 90',                  dosis:1,     precio:6.6},
+  {periodo:'Sept. Mediados', cat:'Labores',       nombre:'Aplicacion Terrestre',         dosis:1,     precio:2},
+  {periodo:'Octubre',        cat:'Herbicidas',    nombre:'Glifosato 54%',                dosis:3,     precio:3.85},
+  {periodo:'Octubre',        cat:'Herbicidas',    nombre:'Dicamba',                      dosis:0.25,  precio:6},
+  {periodo:'Octubre',        cat:'Herbicidas',    nombre:'2 4-D Etilhexilico',           dosis:1,     precio:4.4},
+  {periodo:'Octubre',        cat:'Labores',       nombre:'Aplicacion Terrestre',         dosis:1,     precio:2},
+  {periodo:'Doble golpe',    cat:'Herbicidas',    nombre:'Coady. Siliconado',            dosis:0.025, precio:30},
+  {periodo:'Doble golpe',    cat:'Herbicidas',    nombre:'Glufosinato de Amonio',        dosis:3,     precio:8},
+  {periodo:'Doble golpe',    cat:'Labores',       nombre:'Aplicacion Terrestre',         dosis:1,     precio:2},
+  {periodo:'Fin Octubre',    cat:'Herbicidas',    nombre:'IMAZETAPIR 10%',               dosis:1,     precio:25},
+  {periodo:'Presiembra Nov.',cat:'Herbicidas',    nombre:'Acuron Pack',                  dosis:1,     precio:41.37},
+  {periodo:'Presiembra Nov.',cat:'Labores',       nombre:'Aplicacion Terrestre',         dosis:1,     precio:2},
+  {periodo:'Presiembra Nov.',cat:'Seguro',        nombre:'Seguro Agrícola',              dosis:1,     precio:15},
+  {periodo:'Siembra Nov.',   cat:'Labores',       nombre:'Siembra Directa c/ fert.',     dosis:1,     precio:58},
+  {periodo:'Siembra Nov.',   cat:'Semillas',      nombre:'Semilla Maiz',                 dosis:0.875, precio:140},
+  {periodo:'Siembra Nov.',   cat:'Fertilizantes', nombre:'MAP',                          dosis:50,    precio:1.03},
+  {periodo:'Siembra Nov.',   cat:'Fertilizantes', nombre:'Urea',                         dosis:150,   precio:0.686},
+  {periodo:'Siembra Nov.',   cat:'Labores',       nombre:'Fertilizacion al voleo',       dosis:1,     precio:10},
+  {periodo:'V2-V4 Alepo',    cat:'Herbicidas',    nombre:'Nicosulfuron 24%',             dosis:0.22,  precio:112},
+  {periodo:'V2-V4 Alepo',    cat:'Herbicidas',    nombre:'2 4-D Etilhexilico',           dosis:0.8,   precio:4.4},
+  {periodo:'V2-V4 Alepo',    cat:'Labores',       nombre:'Aplicacion Terrestre',         dosis:1,     precio:2},
+];
+
+function mkCultivo(nombre, color, precio, rinde, labs) {
+  return {
+    id: cId++, nombre, color,
+    params: {has:60, precio, rinde, fleteL:40, fleteC:0, parit:0, camara:0.5, comision:2, sellado:1.38, comisAlq:0, cosecha:130},
+    cuotas: [], // [{id, mes, anio, qq, pxSoja, tipo:'inmov'|'cosecha'}]
+    labores: (labs||[]).map(l => ({...l, id: lId++})),
+  };
+}
+
+function getCultivo() { return cultivos.find(c => c.id === activoId); }
+
+// ══════════════════════════════════
+// TABS (cultivos + historial)
+// ══════════════════════════════════
+function renderTabs() {
+  const el = document.getElementById('cultivoTabs');
+  el.innerHTML =
+    cultivos.map(c => {
+      const col = COLORES[c.color];
+      const isActive = vistaActiva === 'cultivo' && c.id === activoId;
+      return `
+        <div class="cultivo-tab ${isActive?'active':''}" onclick="switchCultivo(${c.id})">
+          <span class="tab-dot ${col.bcls}"></span>
+          <span class="${col.cls}">${c.nombre}</span>
+                    <span class="tab-dup" onclick="event.stopPropagation();duplicarCultivo(${c.id})" title="Duplicar">⎘</span>
+          ${cultivos.length > 1 ? `<span class="tab-close" onclick="event.stopPropagation();deleteCultivo(${c.id})">×</span>` : ''}
+          ${isActive ? `<span class="tab-bar" style="background:${col.dot}"></span>` : ''}
+        </div>`;
+    }).join('') +
+
+    `<div class="cultivo-tab hist-tab ${vistaActiva==='historial'?'active':''}" onclick="switchHistorial()">
+      📋 Historial ${historial.length ? `<span style="background:var(--acc);color:#fff;border-radius:10px;padding:0 5px;font-size:9px;font-family:'Syne',sans-serif">${historial.length}</span>` : ''}
+      ${vistaActiva==='historial' ? `<span class="tab-bar" style="background:var(--acc)"></span>` : ''}
+    </div>`;
+}
+
+
+function duplicarCultivo(id) {
+  var orig = cultivos.find(function(c){ return c.id === id; });
+  if (!orig) return;
+  var nuevo = {
+    id: cId++,
+    nombre: orig.nombre + ' (copia)',
+    color: orig.color,
+    params: JSON.parse(JSON.stringify(orig.params)),
+    cuotas: JSON.parse(JSON.stringify(orig.cuotas || [])),
+    labores: JSON.parse(JSON.stringify(orig.labores || [])).map(function(l){
+      return Object.assign({}, l, {id: lId++});
+    }),
+  };
+  // Re-asignar ids de cuotas
+  nuevo.cuotas = nuevo.cuotas.map(function(q){ return Object.assign({}, q, {id: qId++}); });
+  cultivos.push(nuevo);
+  activoId = nuevo.id;
+  guardarEstado();
+  renderTabs();
+  renderMain();
+  recalc();
+}
+
+
+function duplicarCultivo(id) {
+  var orig = cultivos.find(function(c){ return c.id === id; });
+  if (!orig) return;
+  // Guardar id para usar en el modal
+  pendingDupId = id;
+  document.getElementById('dup_nombre').value = orig.nombre + ' (copia)';
+  document.getElementById('dup_color').value  = orig.color;
+  openModal('modalDup');
+}
+
+var pendingDupId = null;
+
+function confirmarDup() {
+  var orig = cultivos.find(function(c){ return c.id === pendingDupId; });
+  if (!orig) return;
+  var nombre = document.getElementById('dup_nombre').value.trim();
+  if (!nombre) { alert('Ingresá un nombre'); return; }
+  var color  = document.getElementById('dup_color').value;
+  var nuevo = {
+    id: cId++,
+    nombre: nombre,
+    color: color,
+    params: JSON.parse(JSON.stringify(orig.params)),
+    cuotas: JSON.parse(JSON.stringify(orig.cuotas||[])).map(function(q){ return Object.assign({},q,{id:qId++}); }),
+    labores: JSON.parse(JSON.stringify(orig.labores||[])).map(function(l){ return Object.assign({},l,{id:lId++}); }),
+  };
+  cultivos.push(nuevo);
+  activoId = nuevo.id;
+  closeModal('modalDup');
+  guardarEstado();
+  renderTabs();
+  renderMain();
+  recalc();
+}
+function switchCultivo(id) {
+  activoId = id;
+  vistaActiva = 'cultivo';
+  var main = document.getElementById('mainPanel');
+  var res  = document.getElementById('resultsPanel');
+  main.className = 'main';
+  main.style.gridColumn = '';
+  res.style.display = '';
+  var btn = document.getElementById('btnInsumos');
+  if (btn) btn.style.color = '';
+  renderTabs();
+  renderMain();
+  recalc();
+}
+
+function switchHistorial() {
+  vistaActiva = 'historial';
+  // Restore normal 2-col layout (historial usa todo el main)
+  var main = document.getElementById('mainPanel');
+  var res  = document.getElementById('resultsPanel');
+  main.className = 'main';
+  main.style.gridColumn = '';
+  res.style.display = '';
+  renderTabs();
+  renderHistorial();
+}
+
+function switchInsumos() {
+  vistaActiva = 'insumos';
+  renderTabs();
+  renderInsumosPanel();
+  // Marcar botón activo
+  var btn = document.getElementById('btnInsumos');
+  if (btn) btn.style.color = 'var(--acc)';
+}
+
+function renderInsumosPanel() {
+  var main = document.getElementById('mainPanel');
+  var res  = document.getElementById('resultsPanel');
+  document.getElementById('headerBadge').textContent = 'Precios de Insumos';
+  res.style.display = 'none';
+  main.style.gridColumn = '1 / -1';
+  main.className = 'main';
+
+  var out = '';
+
+  // ── Formulario arriba (horizontal compacto)
+  out += '<div style="background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:14px 18px;margin-bottom:16px">';
+  out += '<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">';
+  out += '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:13px;color:var(--tx);flex-shrink:0" id="insFormTitle">Nuevo Insumo</div>';
+
+  // Categoría
+  out += '<div style="display:flex;flex-direction:column;gap:3px;min-width:140px">';
+  out += '<label style="font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:Syne,sans-serif;font-weight:700">Categoría</label>';
+  out += '<select id="mi_cat" style="background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:5px 8px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none">';
+  out += '<option>Herbicidas</option><option>Fertilizantes</option><option>Semillas</option><option>Fungi + Insec</option><option>Labores</option><option>Seguro</option><option>Otro</option>';
+  out += '</select></div>';
+
+  // Nombre
+  out += '<div style="display:flex;flex-direction:column;gap:3px;flex:1;min-width:180px">';
+  out += '<label style="font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:Syne,sans-serif;font-weight:700">Nombre</label>';
+  out += '<input type="text" id="mi_nombre" placeholder="Ej: Glifosato 54%" style="background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:5px 9px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none;width:100%">';
+  out += '</div>';
+
+  // Precio
+  out += '<div style="display:flex;flex-direction:column;gap:3px;min-width:100px">';
+  out += '<label style="font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:Syne,sans-serif;font-weight:700">Precio</label>';
+  out += '<input type="number" id="mi_precio" value="0" step="any" style="background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:5px 9px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none;width:100%">';
+  out += '</div>';
+
+  // Unidad
+  out += '<div style="display:flex;flex-direction:column;gap:3px;min-width:90px">';
+  out += '<label style="font-size:9px;color:var(--tm);text-transform:uppercase;letter-spacing:.08em;font-family:Syne,sans-serif;font-weight:700">Unidad</label>';
+  out += '<input type="text" id="mi_unit" value="usd/lt" style="background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:5px 9px;color:var(--tx);font-family:Inter,sans-serif;font-size:12px;outline:none;width:100%">';
+  out += '</div>';
+
+  // Botones
+  out += '<div style="display:flex;gap:6px;align-self:flex-end;padding-bottom:1px">';
+  out += '<button class="btn-prim" onclick="saveInsumoPanel()" style="padding:6px 16px;font-size:11px">Guardar</button>';
+  out += '<button class="btn-sec" onclick="resetInsForm()" style="padding:6px 12px;font-size:11px">Limpiar</button>';
+  out += '</div>';
+
+  out += '</div>'; // flex row
+  out += '<div id="insFormDesc" style="font-size:10px;color:var(--td);margin-top:6px">Hacé click en un insumo del listado para editarlo.</div>';
+  out += '</div>'; // form card
+
+  // ── Buscador + tabla full width
+  out += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">';
+  out += '<div class="sec-title" style="margin:0">// Listado de Insumos</div>';
+  out += '<input type="text" id="searchInsumo" placeholder="Buscar..." oninput="filterInsPanel(this.value)" ';
+  out += 'style="flex:1;max-width:300px;background:var(--bg);border:1px solid var(--bd2);border-radius:3px;padding:4px 9px;font-family:Inter,sans-serif;font-size:12px;color:var(--tx);outline:none">';
+  out += '<span id="insCount" style="font-size:11px;color:var(--td)"></span>';
+  out += '</div>';
+
+  out += '<div id="insumosList"></div>';
+
+  main.innerHTML = out;
+  filterInsPanel('');
+}
+
+
+function filterInsPanel(filter) {
+  var fl = filter.toLowerCase();
+  var list = document.getElementById('insumosList');
+  if (!list) return;
+  var filtered = INSUMOS.filter(function(ins) {
+    if (!fl) return true;
+    return ins.name.toLowerCase().includes(fl) || ins.cat.toLowerCase().includes(fl);
+  });
+  if (!filtered.length) {
+    list.innerHTML = '<div style="padding:20px;text-align:center;color:var(--td);font-size:11px">Sin resultados para "' + filter + '"</div>';
+    return;
+  }
+  var out = '<table class="tbl" style="table-layout:fixed">';
+  out += '<thead><tr>';
+  out += '<th style="width:130px">Categoría</th>';
+  out += '<th>Nombre</th>';
+  out += '<th class="r" style="width:80px">Precio</th>';
+  out += '<th style="width:70px">Unidad</th>';
+  out += '<th style="width:80px"></th>';
+  out += '</tr></thead><tbody>';
+  filtered.forEach(function(ins) {
+    var color = CAT_COLOR[ins.cat] || 'var(--tm)';
+    out += '<tr>';
+    out += '<td><span class="cat-dot" style="background:' + color + '"></span><span style="font-size:11px;color:' + color + '">' + ins.cat + '</span></td>';
+    out += '<td style="font-size:12px;cursor:pointer" onclick="loadInsForm(' + ins.id + ')" title="Editar">' + ins.name + '</td>';
+    out += '<td class="td-r" style="color:var(--acc);font-weight:700">' + ins.price + '</td>';
+    out += '<td style="font-size:10px;color:var(--td)">' + ins.unit + '</td>';
+    out += '<td style="text-align:right">';
+    out += '<button class="btn-usar-ins" onclick="useInsumo(' + ins.id + ')" title="Agregar al cultivo activo" style="margin-right:4px">+ Usar</button>';
+    out += '<button class="btn-del-ins" onclick="deleteInsumo(' + ins.id + ')" title="Eliminar" style="opacity:1">×</button>';
+    out += '</td>';
+    out += '</tr>';
+  });
+  out += '</tbody></table>';
+  list.innerHTML = out;
+  var cnt = document.getElementById('insCount');
+  if (cnt) cnt.textContent = filtered.length + ' insumos';
+}
+
+function loadInsForm(id) {
+  editingInsId = id;
+  var ins = INSUMOS.find(function(x){ return x.id === id; });
+  if (!ins) return;
+  document.getElementById('insFormTitle').textContent = 'Editar Insumo';
+  document.getElementById('insFormDesc').textContent = 'Modificá los datos y guardá.';
+  document.getElementById('mi_cat').value    = ins.cat;
+  document.getElementById('mi_unit').value   = ins.unit;
+  document.getElementById('mi_nombre').value = ins.name;
+  document.getElementById('mi_precio').value = ins.price;
+}
+
+function resetInsForm() {
+  editingInsId = null;
+  document.getElementById('insFormTitle').textContent = 'Nuevo Insumo';
+  document.getElementById('insFormDesc').textContent = 'Completá los datos y guardá. Hacé click en un insumo del listado para editarlo.';
+  document.getElementById('mi_cat').value    = 'Herbicidas';
+  document.getElementById('mi_unit').value   = 'usd/lt';
+  document.getElementById('mi_nombre').value = '';
+  document.getElementById('mi_precio').value = 0;
+}
+
+function saveInsumoPanel() {
+  var cat   = document.getElementById('mi_cat').value;
+  var name  = document.getElementById('mi_nombre').value.trim();
+  var price = parseFloat(document.getElementById('mi_precio').value) || 0;
+  var unit  = document.getElementById('mi_unit').value.trim() || 'usd/und';
+  if (!name) { alert('Ingresá un nombre'); return; }
+  if (editingInsId) {
+    Object.assign(INSUMOS.find(function(x){ return x.id === editingInsId; }), {cat, name, price, unit});
+  } else {
+    INSUMOS.push({id: insNextId++, cat, name, price, unit});
+  }
+  resetInsForm();
+  filterInsPanel(document.getElementById('searchInsumo')?.value || '');
+  guardarEstado();
+}
+
+function openNewCultivoModal() {
+  document.getElementById('mc_nombre').value = '';
+  document.getElementById('mc_precio').value = 170;
+  document.getElementById('mc_rinde').value  = 3;
+  openModal('modalCultivo');
+}
+
+function crearCultivo() {
+  const nombre = document.getElementById('mc_nombre').value.trim();
+  const color  = document.getElementById('mc_color').value;
+  const precio = parseFloat(document.getElementById('mc_precio').value) || 170;
+  const rinde  = parseFloat(document.getElementById('mc_rinde').value)  || 3;
+  if (!nombre) { alert('Ingresá un nombre'); return; }
+  const c = mkCultivo(nombre, color, precio, rinde, []);
+  cultivos.push(c);
+  activoId = c.id;
+  vistaActiva = 'cultivo';
+  closeModal('modalCultivo');
+  renderTabs();
+  renderMain();
+  recalc();
+  guardarEstado();
+}
+
+function deleteCultivo(id) {
+  if (!confirm('¿Eliminar este cultivo?')) return;
+  cultivos = cultivos.filter(c => c.id !== id);
+  if (activoId === id) activoId = cultivos[0]?.id || null;
+  renderTabs(); renderMain(); recalc(); guardarEstado();
+}
+
+// ══════════════════════════════════
+// MAIN PANEL
+// ══════════════════════════════════
+function renderMain() {
+  var main = document.getElementById('mainPanel');
+  var res  = document.getElementById('resultsPanel');
+  main.className = 'main';
+  main.style.gridColumn = '';
+  if (res) res.style.display = '';
+  var c = getCultivo();
+  if (!c) {
+    main.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--td);font-family:Syne,sans-serif;font-size:13px;font-weight:700;letter-spacing:.04em">Creá un cultivo con + Cultivo</div>';
+    res.innerHTML = '';
+    document.getElementById('headerBadge').textContent = '—';
+    return;
+  }
+  var p   = c.params;
+  var col = COLORES[c.color];
+
+  var out = '';
+  out += '<div class="sec-title">// Parámetros — <span class="' + col.cls + '">' + c.nombre + '</span></div>';
+  out += '<div class="params-grid">';
+
+  // Bloque Campo
+  out += '<div class="param-block"><div class="param-head">Campo</div>';
+  out += pr('p_has','Superficie',p.has,'ha','has');
+  out += pr('p_rinde','Rinde base',p.rinde,'t/ha','rinde');
+  out += pr('p_precio','Precio',p.precio,'USD/t','precio');
+  out += '</div>';
+
+  // Bloque Gastos Comerc.
+  out += '<div class="param-block"><div class="param-head">Gastos Comercialización</div>';
+  out += pr('p_fleteL','Flete largo',p.fleteL,'USD/t','fleteL');
+  out += pr('p_fleteC','Flete corto',p.fleteC,'USD/t','fleteC');
+  out += pr('p_parit','Paritaria',p.parit,'USD/t','parit');
+  out += pr('p_camara','Gtos. Cámara',p.camara,'USD/t','camara');
+  out += pr('p_comision','Comisión vta',p.comision,'% s/IB','comision');
+  out += pr('p_sellado','Sellado 1116C',p.sellado,'% s/IB','sellado');
+  out += pr('p_comisAlq','Comis. alquiler',p.comisAlq,'% s/alq','comisAlq');
+  out += '</div>';
+
+  // Bloque Comercialización
+  out += '<div class="param-block"><div class="param-head">Comercialización</div>';
+  out += pr('p_cosecha','Cosecha',p.cosecha,'USD/ha','cosecha');
+  out += pr('p_comisAlq','Comis. alquiler',p.comisAlq,'%','comisAlq');
+  out += '</div>';
+
+  out += '</div>'; // end params-grid
+
+  // Panel Alquiler
+  out += '<div class="sec-title">// Alquiler — Cuotas de Pago</div>';
+  out += '<div class="alq-panel">';
+  out += '<div class="alq-head">';
+  out += '<span class="alq-head-title">Cuotas de alquiler</span>';
+  out += '<button class="btn-add-alq" onclick="agregarCuota()">+ Cuota</button>';
+  out += '</div>';
+  out += '<div id="alqPanel"></div>';
+  // comisAlq se configura en el bloque Comercialización, no acá
+  out += '</div>';
+
+  // Tabla costos directos
+  out += '<div class="sec-title">// Detalle de Costos Directos</div>';
+  out += '<table class="tbl"><thead><tr>';
+  out += '<th style="width:96px">Período</th><th>Categoría</th><th>Producto / Labor</th>';
+  out += '<th class="r">Dosis/ha</th><th class="r">USD/und</th><th class="r">USD/ha</th>';
+  out += '<th class="r" style="color:var(--acc)">USD Total</th><th style="width:22px"></th>';
+  out += '</tr></thead>';
+  out += '<tbody id="laboresBody"></tbody>';
+  out += '<tfoot><tr class="row-total">';
+  out += '<td colspan="5" style="color:var(--tm);font-size:9px;text-transform:uppercase;letter-spacing:.08em">Total Costos Directos</td>';
+  out += '<td class="td-r neg" id="totalCostosCell">—</td>';
+  out += '<td class="td-r neg" id="totalCostosTotalCell" style="color:var(--acc)">—</td>';
+  out += '<td></td></tr></tfoot></table>';
+  out += '<button class="btn-add" onclick="abrirModalVacio()">+ Agregar fila</button>';
+
+  main.innerHTML = out;
+  renderLabores();
+  renderAlqPanel();
+}
+
+
+function pr(id, label, val, unit, key) {
+  return `<div class="param-row">
+    <span class="param-label">${label}</span>
+    <div class="inp-wrap">
+      <input type="number" id="${id}" value="${val}" step="any" oninput="syncParam('${key}');recalc()">
+      <span class="inp-unit">${unit}</span>
+    </div>
+  </div>`;
+}
+
+function syncParam(key) {
+  const c = getCultivo(); if (!c) return;
+  const el = document.getElementById('p_' + key);
+  if (el) c.params[key] = parseFloat(el.value) || 0;
+  guardarEstado();
+
+}
+
+function mesAnioStr(mes, anio) {
+  if (!mes || !anio) return '';
+  const MESES = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return MESES[mes] + ' ' + String(anio).slice(2);
+}
+function mesAnioVal(mes, anio) {
+  if (!mes || !anio) return '';
+  return `${anio}-${String(mes).padStart(2,'0')}`;
+}
+
+function renderLabores() {
+  const c = getCultivo(); if (!c) return;
+  const tbody = document.getElementById('laboresBody'); if (!tbody) return;
+  // Sort by anio then mes, preserving order within same month
+  const sorted = [...c.labores].sort((a,b) => {
+    const ya = (a.anio||0)*100+(a.mes||0), yb = (b.anio||0)*100+(b.mes||0);
+    return ya - yb;
+  });
+  // Update order in cultivo
+  c.labores = sorted;
+  const has = c.params.has;
+  tbody.innerHTML = c.labores.map((l, i) => {
+    const usdha = l.dosis * l.precio;
+    const usdTotal = usdha * has;
+    const color = CAT_COLOR[l.cat] || 'var(--tm)';
+    const prevL = c.labores[i-1];
+    const sameMonth = i > 0 && prevL.mes === l.mes && prevL.anio === l.anio;
+    const val = mesAnioVal(l.mes, l.anio);
+    // Precio efectivo desde listado o manual
+    var precioEfec = l.precio;
+    var vinculado = false;
+    if (l.insId) {
+      var insRef = INSUMOS.find(function(x){ return x.id === l.insId; });
+      if (insRef) { precioEfec = insRef.price; vinculado = true; }
+    }
+    var usdhaEfec  = l.dosis * precioEfec;
+    var usdTotalEfec = usdhaEfec * has;
+    var precioDisplay = vinculado
+      ? `<span style="color:var(--acc);font-size:11px" title="Vinculado al listado de insumos">${precioEfec} 🔗</span>`
+      : `<input class="cell-inp" type="number" value="${l.precio}" step="any" min="0" onchange="updateLabor(${l.id},'precio',this.value)" style="width:64px">`;
+    return `<tr>
+      <td style="min-width:90px">
+        <input class="period-inp" type="month" value="${val}"
+          onchange="updatePeriodo(${l.id}, this.value)"
+          title="Mes de egreso"
+          style="opacity:${sameMonth?'0.35':'1'}">
+      </td>
+      <td><span class="cat-dot" style="background:${color}"></span><span style="font-size:11px;color:${color}">${l.cat}</span></td>
+      <td style="font-size:12px">${l.nombre}</td>
+      <td class="td-r"><input class="cell-inp" type="number" value="${l.dosis}" step="any" min="0" onchange="updateLabor(${l.id},'dosis',this.value)" style="width:56px"></td>
+      <td class="td-r">${precioDisplay}</td>
+      <td class="td-r" id="uh-${l.id}">${fN2(usdhaEfec)}</td>
+      <td class="td-r" id="ut-${l.id}" style="color:var(--acc);font-size:11px">${fN(usdTotalEfec)}</td>
+      <td style="text-align:center"><button class="btn-del" onclick="deleteFila(${l.id})">×</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function updatePeriodo(id, val) {
+  const c = getCultivo(); if (!c) return;
+  const l = c.labores.find(x => x.id === id); if (!l) return;
+  if (val) { const p = val.split('-'); l.anio = +p[0]; l.mes = +p[1]; }
+  else { l.mes = 0; l.anio = 0; }
+  renderLabores(); recalc();
+}
+
+function updateLabor(id, field, val) {
+  const c = getCultivo(); if (!c) return;
+  const l = c.labores.find(x => x.id === id); if (!l) return;
+  l[field] = parseFloat(val) || 0;
+  const cell = document.getElementById(`uh-${id}`);
+  if (cell) cell.textContent = fN2(l.dosis * l.precio);
+  recalc(); guardarEstado();
+}
+
+function deleteFila(id) {
+  const c = getCultivo(); if (!c) return;
+  c.labores = c.labores.filter(x => x.id !== id);
+  renderLabores(); recalc();
+}
+
+
+
+function abrirModalVacio() {
+  poblarSelectInsumos(null);
+  document.getElementById('mf_insumo').value = '';
+  document.getElementById('mf_nombre_row').style.display = 'none';
+  document.getElementById('mf_nombre').value  = '';
+  document.getElementById('mf_precio').value  = 0;
+  document.getElementById('mf_cat').value     = 'Herbicidas';
+  document.getElementById('mf_periodo').value = '';
+  document.getElementById('mf_dosis').value   = 1;
+  var hint = document.getElementById('mf_precio_hint');
+  if (hint) hint.textContent = '';
+  openModal('modalFila');
+}
+
+function poblarSelectInsumos(selectedId) {
+  var sel = document.getElementById('mf_insumo');
+  if (!sel) return;
+  var cats = {};
+  INSUMOS.forEach(function(ins) {
+    if (!cats[ins.cat]) cats[ins.cat] = [];
+    cats[ins.cat].push(ins);
+  });
+  var html = '<option value="">— Seleccionar del listado —</option>';
+  html += '<option value="__manual__">✎ Ingresar manualmente</option>';
+  Object.entries(cats).forEach(function(e) {
+    var cat = e[0], items = e[1];
+    html += '<optgroup label="' + cat + '">';
+    items.forEach(function(ins) {
+      var sel2 = (selectedId && ins.id === selectedId) ? ' selected' : '';
+      html += '<option value="' + ins.id + '"' + sel2 + '>' + ins.name + ' (' + ins.price + ' ' + ins.unit + ')</option>';
+    });
+    html += '</optgroup>';
+  });
+  sel.innerHTML = html;
+}
+
+function onSelectInsumo(val) {
+  var nombreRow = document.getElementById('mf_nombre_row');
+  var hint      = document.getElementById('mf_precio_hint');
+  if (val === '' ) {
+    nombreRow.style.display = 'none';
+    document.getElementById('mf_precio').value = 0;
+    hint.textContent = '';
+    return;
+  }
+  if (val === '__manual__') {
+    nombreRow.style.display = '';
+    document.getElementById('mf_nombre').value = '';
+    document.getElementById('mf_precio').value = 0;
+    hint.textContent = '';
+    return;
+  }
+  // Insumo del listado
+  nombreRow.style.display = 'none';
+  var ins = INSUMOS.find(function(x){ return x.id === parseInt(val); });
+  if (!ins) return;
+  document.getElementById('mf_cat').value    = ins.cat;
+  document.getElementById('mf_precio').value = ins.price;
+  hint.textContent = '← precio del listado';
+}
+
+function addFila() {
+  var c = getCultivo();
+  if (!c) { alert('Seleccioná un cultivo'); return; }
+
+  // Leer nombre: desde el select o desde el input manual
+  var selVal = document.getElementById('mf_insumo').value;
+  var nombre = '';
+  if (!selVal) {
+    alert('Seleccioná un producto del listado o elegí "Ingresar manualmente"');
+    return;
+  }
+  if (selVal === '__manual__') {
+    nombre = document.getElementById('mf_nombre').value.trim();
+    if (!nombre) { alert('Ingresá un nombre para el producto'); return; }
+  } else {
+    var ins = INSUMOS.find(function(x){ return x.id === parseInt(selVal); });
+    nombre = ins ? ins.name : document.getElementById('mf_nombre').value.trim();
+    if (!nombre) { alert('No se encontró el insumo, seleccioná de nuevo'); return; }
+  }
+
+  var periodoVal = document.getElementById('mf_periodo').value;
+  var mes = 0, anio = 0;
+  if (periodoVal) { var pp = periodoVal.split('-'); anio = +pp[0]; mes = +pp[1]; }
+
+  var insIdRef = (selVal && selVal !== '__manual__') ? parseInt(selVal) : null;
+  c.labores.push({
+    id: lId++, mes: mes, anio: anio,
+    insId:  insIdRef,  // referencia al insumo — precio se actualiza del listado
+    cat:    document.getElementById('mf_cat').value,
+    nombre: nombre,
+    dosis:  parseFloat(document.getElementById('mf_dosis').value) || 1,
+    precio: parseFloat(document.getElementById('mf_precio').value) || 0,
+  });
+
+  closeModal('modalFila');
+  // Siempre re-renderizar
+  if (vistaActiva === 'insumos') {
+    switchCultivo(activoId);
+  } else {
+    renderMain();
+    recalc();
+  }
+}
+
+
+// ══════════════════════════════════
+// CUOTAS DE ALQUILER
+// ══════════════════════════════════
+function agregarCuota() {
+  const c = getCultivo(); if (!c) return;
+  // Valor por defecto: cuota de 10 qq, precio soja 280, inmov
+  c.cuotas = c.cuotas || [];
+  c.cuotas.push({id: qId++, mes:0, anio:0, qq:10, pxSoja:280, tipo:'inmov'});
+  renderAlqPanel();
+  recalc();
+  guardarEstado();
+}
+
+function deleteCuota(id) {
+  const c = getCultivo(); if (!c) return;
+  c.cuotas = c.cuotas.filter(q => q.id !== id);
+  renderAlqPanel();
+  recalc();
+}
+
+function updateCuota(id, field, val) {
+  const c = getCultivo(); if (!c) return;
+  const q = c.cuotas.find(x => x.id === id); if (!q) return;
+  if (field === 'mes' || field === 'anio' || field === 'qq') {
+    q[field] = parseInt(val) || 0;
+  } else if (field === 'pxSoja') {
+    q[field] = parseFloat(val) || 0;
+  } else if (field === 'tipo') {
+    q[field] = val;
+  }
+  renderAlqPanel();
+  recalc();
+}
+
+function renderAlqPanel() {
+  var c = getCultivo();
+  var panel = document.getElementById('alqPanel');
+  if (!panel || !c) return;
+  c.cuotas = c.cuotas || [];
+
+  if (!c.cuotas.length) {
+    panel.innerHTML = '<div class="alq-empty">Sin cuotas. Hacé clic en + Cuota para agregar.</div>';
+    return;
+  }
+
+  var comisAlq = c.params.comisAlq || 0;
+  var MESES = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  var totalInmov = 0, totalCosecha = 0;
+
+  var out = '<table class="alq-table"><thead><tr>';
+  out += '<th>Vto.</th><th class="r">qq/ha</th><th class="r">Px Soja</th>';
+  out += '<th class="r">USD/ha</th><th class="r">USD Total</th><th>Tipo</th><th></th>';
+  out += '</tr></thead><tbody>';
+
+  c.cuotas.forEach(function(q) {
+    var usdHa  = (q.qq / 10) * q.pxSoja * (1 + comisAlq / 100);
+    var usdTot = usdHa * c.params.has;
+    if (q.tipo === 'inmov') totalInmov += usdHa;
+    else totalCosecha += usdHa;
+
+    var mesVal = (q.mes && q.anio) ? (q.anio + '-' + String(q.mes).padStart(2,'0')) : '';
+
+    out += '<tr>';
+    out += '<td><input class="period-inp" type="month" value="' + mesVal + '" style="width:90px" ';
+    out += 'onchange="updateCuotaPeriodo(' + q.id + ',this.value)"></td>';
+
+    out += '<td class="td-r"><input class="cell-inp" type="number" value="' + q.qq + '" ';
+    out += 'step="1" min="0" style="width:52px" ';
+    out += 'onchange="updateCuotaField(' + q.id + ',1,this.value)"></td>';
+
+    out += '<td class="td-r"><input class="cell-inp" type="number" value="' + q.pxSoja + '" ';
+    out += 'step="1" min="0" style="width:62px" ';
+    out += 'onchange="updateCuotaField(' + q.id + ',2,this.value)"></td>';
+
+    out += '<td class="td-r">' + fN2(usdHa) + '</td>';
+    out += '<td class="td-r" style="color:var(--acc)">' + fN(usdTot) + '</td>';
+
+    out += '<td><select style="font-size:10px;border:1px solid var(--bd2);border-radius:3px;';
+    out += 'padding:2px 4px;background:var(--bg);color:var(--tx);font-family:Inter,sans-serif;cursor:pointer" ';
+    out += 'onchange="updateCuotaField(' + q.id + ',3,this.value)">';
+    out += '<option value="inmov"'   + (q.tipo === 'inmov'    ? ' selected' : '') + '>Inmovilizado</option>';
+    out += '<option value="cosecha"' + (q.tipo === 'cosecha'  ? ' selected' : '') + '>Cosecha</option>';
+    out += '</select></td>';
+
+    out += '<td><button class="btn-del" onclick="deleteCuota(' + q.id + ')">×</button></td>';
+    out += '</tr>';
+  });
+
+  var totalAlq = totalInmov + totalCosecha;
+  out += '</tbody><tfoot><tr class="alq-total">';
+  out += '<td colspan="3" style="font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--tm)">Total Alquiler</td>';
+  out += '<td class="td-r neg">' + fN2(totalAlq) + ' USD/ha</td>';
+  out += '<td class="td-r neg">' + fN(totalAlq * c.params.has) + ' USD</td>';
+  out += '<td colspan="2"></td></tr></tfoot></table>';
+
+  out += '<div style="display:flex;gap:16px;margin-top:8px;font-size:10px">';
+  out += '<span><span class="tipo-badge tipo-inmov">Inmovilizado</span> ';
+  out += 'USD ' + fN2(totalInmov) + '/ha · USD ' + fN(totalInmov * c.params.has) + ' total</span>';
+  out += '<span><span class="tipo-badge tipo-cosecha">Cosecha</span> ';
+  out += 'USD ' + fN2(totalCosecha) + '/ha · USD ' + fN(totalCosecha * c.params.has) + ' total</span>';
+  out += '</div>';
+
+  panel.innerHTML = out;
+}
+
+// updateCuotaField uses numeric field codes to avoid quoting issues
+// 1=qq, 2=pxSoja, 3=tipo
+function updateCuotaField(id, field, val) {
+  var c = getCultivo(); if (!c) return;
+  var q = c.cuotas.find(function(x){ return x.id === id; }); if (!q) return;
+  if (field === 1) q.qq     = parseInt(val) || 0;
+  if (field === 2) q.pxSoja = parseFloat(val) || 0;
+  if (field === 3) q.tipo   = val;
+  renderAlqPanel();
+  recalc();
+}
+
+
+function updateCuotaPeriodo(id, val) {
+  const c = getCultivo(); if (!c) return;
+  const q = c.cuotas.find(x => x.id === id); if (!q) return;
+  if (val) { const p = val.split('-'); q.anio = +p[0]; q.mes = +p[1]; }
+  else { q.mes = 0; q.anio = 0; }
+  recalc();
+}
+
+function calcAlquilerCuotas(c) {
+  // Devuelve {alqUSD, alqInmov, alqCosecha} todo en USD/ha
+  c.cuotas = c.cuotas || [];
+  const comisAlq = (c.params.comisAlq || 0) / 100;
+  let alqInmov = 0, alqCosecha = 0;
+  c.cuotas.forEach(function(q) {
+    const usdHa = (q.qq / 10) * q.pxSoja * (1 + comisAlq);
+    if (q.tipo === 'inmov') alqInmov += usdHa;
+    else alqCosecha += usdHa;
+  });
+  return {alqUSD: alqInmov + alqCosecha, alqInmov, alqCosecha};
+}
+
+// ══════════════════════════════════
+// CÁLCULO
+// ══════════════════════════════════
+function calcAt(c, rinde) {
+  function precioEfectivo(l) {
+    if (l.insId) {
+      var ins = INSUMOS.find(function(x){ return x.id === l.insId; });
+      if (ins) return ins.price;
+    }
+    return l.precio;
+  }
+  const p = c.params;
+  const ingresoHa = p.precio * rinde;
+  const gcFleteL  = p.fleteL * rinde;
+  const gcFleteC  = p.fleteC * rinde;
+  const gcParit   = p.parit  * rinde;
+  const gcCamara  = p.camara * rinde;
+  const gcComis   = ingresoHa * (p.comision / 100);
+  const gcSellado = ingresoHa * (p.sellado  / 100);
+  const gcTotal   = gcFleteL + gcFleteC + gcParit + gcCamara + gcComis + gcSellado;
+  const cdTotal   = c.labores.reduce((a, l) => a + l.dosis * l.precio, 0);
+  const alqCalc   = calcAlquilerCuotas(c);
+  const alqUSD    = alqCalc.alqUSD;
+  const alqInmov  = alqCalc.alqInmov;
+  const alqCosecha = alqCalc.alqCosecha;
+  const margenBruto = ingresoHa - gcTotal - cdTotal;
+  const margenNeto  = margenBruto - p.cosecha - alqUSD;
+  const catMap = {};
+  const flujoMes = {};
+  c.labores.forEach(l => {
+    var pe = precioEfectivo(l);
+    catMap[l.cat] = (catMap[l.cat]||0) + l.dosis*pe;
+    if (l.mes && l.anio) {
+      const k = `${l.anio}-${String(l.mes).padStart(2,'0')}`;
+      flujoMes[k] = (flujoMes[k]||0) + l.dosis*pe;
+    }
+  });
+  // ROI — capital según asignación de cuotas
+  const capInmov   = (cdTotal + alqInmov) * p.has;
+  const capCosecha = (gcTotal + p.cosecha + alqCosecha) * p.has;
+  const capTotal = capInmov + capCosecha; // se muestra informativo
+  const mnTotal = margenNeto * p.has;
+  // ROI solo sobre capital inmovilizado (el que realmente se comprometió antes de cobrar)
+  const roiPct = capInmov > 0 ? (mnTotal / capInmov) * 100 : 0;
+
+  // Rinde de indiferencia: precio * rinde_ind = gcTotal + cdTotal + cosecha + alqUSD
+  const costosTotalesHa = gcTotal + cdTotal + p.cosecha + alqUSD;
+  const rindeIndiferencia = p.precio > 0 ? costosTotalesHa / p.precio : 0;
+
+  return {ingresoHa, gcFleteL, gcFleteC, gcParit, gcCamara, gcComis, gcSellado, gcTotal, cdTotal, alqUSD,
+    alqInmov, alqCosecha,
+    margenBruto, margenNeto, catMap, flujoMes, cosecha:p.cosecha,
+    has:p.has, capInmov, capCosecha, capTotal, mnTotal, roiPct, rindeIndiferencia};
+}
+
+
+// ── renderFlujo: funcion separada para evitar backticks anidados ──
+function renderFlujo(flujoMes) {
+  const entries = Object.entries(flujoMes).sort();
+  if (!entries.length) {
+    return '<div style="color:var(--td);font-size:11px;padding:4px 0">Asigna meses a los items de la tabla para ver el flujo.</div>';
+  }
+  const maxV = Math.max(...entries.map(e => e[1]));
+  const MESES = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  let acum = 0;
+  let out = '';
+  entries.forEach(function([k, v]) {
+    acum += v;
+    const pct = Math.min(v / maxV * 100, 100);
+    const parts = k.split('-');
+    const label = MESES[+parts[1]] + ' ' + String(parts[0]).slice(2);
+    out += '<div class="bar-wrap">';
+    out += '<div class="bar-label">';
+    out += '<span style="font-family:Syne,sans-serif;font-weight:700;font-size:10px;color:var(--tx)">' + label + '</span>';
+    out += '<span style="font-size:10px;color:var(--neg)">- USD ' + fN(v) + '/ha</span>';
+    out += '</div>';
+    out += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:var(--warn)"></div></div>';
+    out += '<div style="font-size:9px;color:var(--td);text-align:right;margin-top:1px">Acum: USD ' + fN(acum) + '/ha</div>';
+    out += '</div>';
+  });
+  const total = entries.reduce(function(a, e) { return a + e[1]; }, 0);
+  out += '<div style="margin-top:6px;padding:6px 8px;background:var(--s2);border:1px solid var(--bd);border-radius:3px;display:flex;justify-content:space-between;font-size:10px">';
+  out += '<span style="font-family:Syne,sans-serif;font-weight:700;font-size:9px;text-transform:uppercase;color:var(--tm)">Total con fecha</span>';
+  out += '<span style="color:var(--neg);font-family:Syne,sans-serif;font-weight:700">- USD ' + fN(total) + '/ha</span>';
+  out += '</div>';
+  return out;
+}
+
+function recalc() {
+  if (vistaActiva === 'historial') return;
+  renderAlqPanel();
+  const c = getCultivo();
+  const res = document.getElementById('resultsPanel');
+  const tc  = document.getElementById('totalCostosCell');
+  if (!c) { res.innerHTML = ''; return; }
+
+  const r0  = c.params.rinde;
+  const d   = calcAt(c, r0);
+  const col = COLORES[c.color];
+
+  if (tc) tc.textContent = '– USD ' + fN(d.cdTotal) + '/ha';
+  var ttc = document.getElementById('totalCostosTotalCell');
+  if (ttc) ttc.textContent = 'USD ' + fN(d.cdTotal * d.has);
+  document.getElementById('headerBadge').textContent =
+    c.params.has + ' ha · USD ' + c.params.precio + '/t · ' + r0 + ' t/ha';
+
+  const step   = r0 <= 5 ? 0.5 : 1;
+  const rindes = [];
+  for (let r = Math.max(0.5, +(r0-2*step).toFixed(1)); r <= +(r0+2*step+.001).toFixed(1); r = +(r+step).toFixed(1))
+    rindes.push(r);
+  const calcs    = rindes.map(function(r) { return calcAt(c, r); });
+  const sensKeys = [
+    {key:'ingresoHa',         label:'IB',  cls:''},
+    {key:'gcTotal',           label:'GC',  cls:''},
+    {key:'cdTotal',           label:'CD',  cls:''},
+    {key:'margenBruto',       label:'MB',  cls:'row-mb'},
+    {key:'margenNeto',        label:'MN',  cls:'row-mn'},
+    {key:'roiPct',            label:'ROI', cls:''},
+    {key:'rindeIndiferencia', label:'R.Ind', cls:''},
+  ];
+
+  var out = '';
+
+  // ── KPIs ──
+  out += '<div class="res-title">// KPIs — ' + r0 + ' t/ha · ' + d.has + ' ha</div>';
+  out += '<div class="kpi-cards">';
+  out += kpiCard2('Ingreso Bruto',  'USD ' + fN(d.ingresoHa) + '/ha',  'USD ' + fN(d.ingresoHa * d.has), 'gold');
+  out += kpiCard2('Margen Bruto',   'USD ' + fN(d.margenBruto) + '/ha', 'USD ' + fN(d.margenBruto * d.has), d.margenBruto>=0?'pos':'neg');
+  out += kpiCard2('Margen Neto',    'USD ' + fN(d.margenNeto) + '/ha',  'USD ' + fN(d.margenNeto * d.has),  d.margenNeto>=0?'pos':'neg');
+  out += kpiCard2('ROI',            d.roiPct.toFixed(1) + '%', 'Cap. inmov. USD ' + fN(d.capInmov), d.roiPct>=0?'pos':'neg');
+  out += '</div>';
+  // Segunda fila
+  out += '<div class="kpi-cards" style="margin-top:4px">';
+  out += kpiCard2('Cap. Inmovilizado', 'USD ' + fN(d.capInmov), 'Insumos + Alq. previo', '', 'color:var(--warn)');
+  out += kpiCard2('Cap. Cosecha',      'USD ' + fN(d.capCosecha), 'GC + Cos. + Alq. entrega', '', 'color:var(--warn)');
+  out += kpiCard2('Rto. Indiferencia', d.rindeIndiferencia.toFixed(2) + ' t/ha', 'Margen = 0 (actual: ' + r0 + ')', d.rindeIndiferencia < r0 ? 'pos':'neg');
+  out += kpiCard2('Gastos Totales/ha', 'USD ' + fN(d.gcTotal + d.cdTotal + d.cosecha + d.alqUSD), 'GC + CD + Cos. + Alq.', 'neg');
+  out += '</div>';
+
+  // ── Botón guardar ──
+
+
+  // ── Sensibilidad horizontal (tabla) ──
+  out += '<div style="margin-bottom:8px;display:flex;gap:6px">';
+  out += '<button class="btn-guardar" onclick="abrirModalGuardar()" style="flex:1">&#128190; Guardar en Historial</button>';
+  out += '<button onclick="imprimirMargenActivo()" style="background:none;border:1px solid var(--bd2);border-radius:3px;padding:5px 10px;font-family:Syne,sans-serif;font-weight:700;font-size:10px;cursor:pointer;color:var(--tm);white-space:nowrap">&#128424; PDF</button>';
+  out += '</div>';
+  out += '<div class="res-title">// Sensibilidad por Rinde</div>';
+  out += '<div style="overflow-x:auto;margin-bottom:10px">';
+  out += '<table class="sens-table"><thead><tr>';
+  out += '<th>Concepto</th>';
+  rindes.forEach(function(r) {
+    var hl = r === r0 ? ' style="color:' + col.dot + '"' : '';
+    out += '<th' + hl + '>' + r + ' t/ha</th>';
+  });
+  out += '</tr></thead><tbody>';
+  var sensLabels = {ingresoHa:'Ing. Bruto', gcTotal:'Gtos. Com.', cdTotal:'Costos Dir.', margenBruto:'Mg. Bruto', margenNeto:'Mg. Neto', roiPct:'ROI %', rindeIndiferencia:'Rto. Indif.'};
+  var sensCls    = {margenBruto:'s-mb', margenNeto:'s-mn'};
+  sensKeys.forEach(function(row) {
+    out += '<tr class="' + (sensCls[row.key]||'') + '">';
+    out += '<td>' + (sensLabels[row.key]||row.label) + '</td>';
+    calcs.forEach(function(cc, i) {
+      var v = cc[row.key];
+      var isMN = row.key === 'margenNeto' || row.key === 'margenBruto';
+      var isRoi = row.key === 'roiPct';
+      var isRind = row.key === 'rindeIndiferencia';
+      var cls = (isMN || isRoi) ? (v >= 0 ? 'pos' : 'neg') : (isRind ? (v < r0 ? 'pos' : 'neg') : '');
+      var hl  = rindes[i] === r0 ? ' class="' + cls + ' s-hl"' : ' class="' + cls + '"';
+      var disp = isRoi ? v.toFixed(1)+'%' : (isRind ? v.toFixed(2) : fK(v));
+      out += '<td' + hl + '>' + disp + '</td>';
+    });
+    out += '</tr>';
+  });
+  out += '</tbody></table></div>';
+
+  // ── Gastos Comerciales ──
+  out += '<div class="res-title">// Gastos Comerciales</div>';
+  out += '<div style="margin-bottom:10px">';
+  if (d.gcFleteL > 0) out += gcRow('Flete largo',   fN(d.gcFleteL));
+  if (d.gcFleteC > 0) out += gcRow('Flete corto',   fN(d.gcFleteC));
+  if (d.gcParit  > 0) out += gcRow('Paritaria',     fN(d.gcParit));
+  if (d.gcCamara > 0) out += gcRow('Gtos. Cámara',  fN(d.gcCamara));
+  out += gcRow('Comisión vta',  fN(d.gcComis));
+  out += gcRow('Sellado 1116C', fN(d.gcSellado));
+  out += '<div class="gc-row gc-total"><span class="gl">Total GC</span><span class="gv neg">– USD ' + fN(d.gcTotal) + '/ha</span></div>';
+  out += '<div style="margin-top:4px">' + gcRow('Cosecha', fN(d.cosecha)) + '</div>';
+  if (d.alqUSD > 0) out += gcRow('Alquiler', fN(d.alqUSD));
+  out += '</div>';
+
+  // ── Categorías ──
+  out += '<div class="res-title">// Costos Directos por Categoría</div>';
+  var catEntries = Object.entries(d.catMap);
+  if (!catEntries.length) {
+    out += '<div style="color:var(--td);font-size:11px">Sin costos cargados</div>';
+  } else {
+    var maxCat = Math.max.apply(null, catEntries.map(function(e){ return e[1]; }));
+    catEntries.sort(function(a,b){ return b[1]-a[1]; }).forEach(function(e) {
+      var cat = e[0], val = e[1];
+      var pct = Math.min(val / maxCat * 100, 100);
+      out += '<div class="bar-wrap">';
+      out += '<div class="bar-label">';
+      out += '<span style="color:' + (CAT_COLOR[cat]||'var(--tm)') + ';font-family:Syne,sans-serif;font-weight:700;font-size:9px;text-transform:uppercase">' + cat + '</span>';
+      out += '<span style="font-size:10px;color:var(--tm)">USD ' + fN(val) + '/ha</span>';
+      out += '</div>';
+      out += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + (CAT_COLOR[cat]||'var(--tm)') + '"></div></div>';
+      out += '</div>';
+    });
+  }
+
+  // ── ROI detallado ──
+  out += '<div class="res-title" style="margin-top:12px">// Análisis de Capital y ROI</div>';
+  out += '<div style="margin-bottom:10px">';
+  out += '<div class="gc-row gc-sub"><span class="gl">Insumos + Labores (inmov.)</span><span class="gv" style="color:var(--warn)">USD ' + fN(d.cdTotal * d.has) + '</span></div>';
+  out += '<div class="gc-row gc-sub"><span class="gl">Alquiler inmovilizado</span><span class="gv" style="color:var(--warn)">USD ' + fN(d.alqInmov * d.has) + '</span></div>';
+  out += '<div class="gc-row gc-total"><span class="gl">Capital Inmovilizado</span><span class="gv" style="color:var(--warn)">USD ' + fN(d.capInmov) + '</span></div>';
+  out += '<div style="margin-top:5px"></div>';
+  out += '<div class="gc-row gc-sub"><span class="gl">GC + Cosecha (al vender)</span><span class="gv" style="color:var(--warn)">USD ' + fN((d.gcTotal + d.cosecha) * d.has) + '</span></div>';
+  out += '<div class="gc-row gc-sub"><span class="gl">Alquiler cosecha</span><span class="gv" style="color:var(--warn)">USD ' + fN(d.alqCosecha * d.has) + '</span></div>';
+  out += '<div class="gc-row gc-total"><span class="gl">Capital al momento cosecha</span><span class="gv" style="color:var(--warn)">USD ' + fN(d.capCosecha) + '</span></div>';
+  out += '<div style="margin-top:5px"></div>';
+  out += '<div class="gc-row gc-total"><span class="gl">Capital Total Comprometido</span><span class="gv" style="color:var(--warn)">USD ' + fN(d.capTotal) + '</span></div>';
+  out += '<div class="gc-row gc-total" style="margin-top:3px"><span class="gl">MN Total (' + d.has + ' ha)</span><span class="gv ' + (d.mnTotal>=0?'pos':'neg') + '">USD ' + fN(d.mnTotal) + '</span></div>';
+  out += '<div style="margin-top:6px;padding:8px 10px;background:' + (d.roiPct>=0?'#f0f8f0':'#fdf0f0') + ';border:1px solid ' + (d.roiPct>=0?'var(--pos)':'var(--neg)') + ';border-radius:4px;display:flex;justify-content:space-between;align-items:center">';
+  out += '<span style="font-family:Syne,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;color:var(--tm)">ROI sobre capital inmovilizado</span>';
+  out += '<span style="font-family:Syne,sans-serif;font-weight:800;font-size:18px;color:' + (d.roiPct>=0?'var(--pos)':'var(--neg)') + '">' + d.roiPct.toFixed(1) + '%</span>';
+  out += '</div>';
+  out += '<div style="margin-top:6px;padding:8px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:4px;display:flex;justify-content:space-between;align-items:center">';
+  out += '<span style="font-family:Syne,sans-serif;font-weight:700;font-size:10px;text-transform:uppercase;color:var(--tm)">Rinde de indiferencia</span>';
+  out += '<span style="font-family:Syne,sans-serif;font-weight:800;font-size:16px;color:' + (d.rindeIndiferencia < r0 ? 'var(--pos)' : 'var(--neg)') + '">' + d.rindeIndiferencia.toFixed(2) + ' t/ha</span>';
+  out += '</div>';
+  out += '<div style="font-size:9px;color:var(--td);margin-top:3px;text-align:right">Margen = 0 en ' + d.rindeIndiferencia.toFixed(2) + ' t/ha · actual: ' + r0 + ' t/ha</div>';
+  out += '</div>';
+
+  // ── Flujo mensual ──
+  out += '<div class="res-title" style="margin-top:14px">// Flujo de Egresos por Mes</div>';
+  out += renderFlujo(d.flujoMes);
+
+  res.innerHTML = out;
+
+  // Auto-guardar en cada recalculo
+  guardarEstado();
+}
+
+function kpiCard(label, val, cls, extraStyle) {
+  var styleAttr = extraStyle ? ' style="' + extraStyle + '"' : '';
+  return '<div class="kpi">'
+    + '<div class="kpi-label">' + label + '</div>'
+    + '<div class="kpi-val ' + (cls||'') + '"' + styleAttr + '>' + val + '</div>'
+    + '<div style="font-size:9px;color:var(--td);margin-top:2px">/ha</div>'
+    + '</div>';
+}
+
+function kpiCard2(label, valMain, valSub, cls, extraStyle) {
+  var styleAttr = extraStyle ? ' style="' + extraStyle + '"' : '';
+  return '<div class="kpi">'
+    + '<div class="kpi-label">' + label + '</div>'
+    + '<div class="kpi-val ' + (cls||'') + '"' + styleAttr + '>' + valMain + '</div>'
+    + '<div style="font-size:10px;color:var(--tm);margin-top:3px;font-weight:600">' + valSub + '</div>'
+    + '</div>';
+}
+
+function gcRow(label, val) {
+  return '<div class="gc-row gc-sub"><span class="gl">' + label + '</span><span class="gv neg">– ' + val + '</span></div>';
+}
+
+// ══════════════════════════════════
+// HISTORIAL
+// ══════════════════════════════════
+function abrirModalGuardar() {
+  const c = getCultivo(); if (!c) return;
+  const now = new Date();
+  document.getElementById('mg_nombre').value =
+    `${c.nombre} — ${now.toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'2-digit'})}`;
+  document.getElementById('mg_nota').value = '';
+  openModal('modalGuardar');
+}
+
+function confirmarGuardar() {
+  const c = getCultivo(); if (!c) return;
+  const nombre = document.getElementById('mg_nombre').value.trim() || c.nombre;
+  const nota   = document.getElementById('mg_nota').value.trim();
+  const r0 = c.params.rinde;
+  const d  = calcAt(c, r0);
+  const col = COLORES[c.color];
+
+  historial.unshift({
+    id: hId++,
+    nombre,
+    nota,
+    fecha: new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    color: c.color,
+    dotColor: col.dot,
+    cultivo: c.nombre,
+    params: {...c.params},
+    cuotas: JSON.parse(JSON.stringify(c.cuotas||[])),
+    labores: JSON.parse(JSON.stringify(c.labores||[])),
+    rinde: r0,
+    d: d,
+  });
+
+  closeModal('modalGuardar');
+  guardarEstado();
+  renderTabs();
+  // Feedback visual
+  const badge = document.getElementById('headerBadge');
+  const prev = badge.textContent;
+  badge.textContent = '✓ Guardado en Historial';
+  badge.style.color = 'var(--pos)';
+  setTimeout(()=>{ badge.textContent=prev; badge.style.color=''; }, 1800);
+}
+
+function renderHistorial() {
+  const main = document.getElementById('mainPanel');
+  const res  = document.getElementById('resultsPanel');
+  res.innerHTML = '';
+  document.getElementById('headerBadge').textContent = `${historial.length} escenario${historial.length!==1?'s':''} guardados`;
+
+  if (!historial.length) {
+    main.innerHTML = `
+      <div class="hist-empty">
+        <div class="hist-empty-icon">📋</div>
+        <div class="hist-empty-txt">Sin escenarios guardados</div>
+        <div style="font-size:11px;color:var(--td);margin-top:4px">Calculá un margen y usá "Guardar en Historial"</div>
+      </div>`;
+    return;
+  }
+
+  main.innerHTML = `
+    <div class="hist-toolbar">
+      <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--tm);text-transform:uppercase;letter-spacing:.08em">
+        // ${historial.length} Escenario${historial.length!==1?'s':''} Guardados
+      </div>
+      <button class="btn-guardar-sec" onclick="limpiarHistorial()">Limpiar todo</button>
+    </div>
+    <div class="hist-cards">
+      ${historial.map(h => `
+        <div class="hist-card">
+          <div class="hist-card-header">
+            <div class="hist-card-dot" style="background:${h.dotColor}"></div>
+            <div>
+              <div class="hist-card-nombre">${h.nombre}</div>
+              <div class="hist-card-fecha">${h.cultivo} · ${h.fecha}</div>
+            </div>
+            <div class="hist-card-actions">
+              <button class="btn-hist-del" onclick="eliminarHist(${h.id})" title="Eliminar">✕</button>
+            </div>
+          </div>
+          <div class="hist-card-body">
+            <div class="hist-row"><span class="hl">Precio</span><span class="hv">USD ${fN(h.params.precio)}/t</span></div>
+            <div class="hist-row"><span class="hl">Rinde</span><span class="hv">${h.rinde} t/ha</span></div>
+            <div class="hist-row"><span class="hl">Superficie</span><span class="hv">${h.params.has} ha</span></div>
+            <div class="hist-row"><span class="hl">Ingreso Bruto</span><span class="hv gold">USD ${fN((h.d||h).ingresoHa)}/ha</span></div>
+            <div class="hist-row"><span class="hl">Gastos Comerc.</span><span class="hv neg">– USD ${fN((h.d||h).gcTotal)}/ha</span></div>
+            <div class="hist-row"><span class="hl">Costos Directos</span><span class="hv neg">– USD ${fN((h.d||h).cdTotal)}/ha (${(h.labores||[]).length} ítems)</span></div>
+            <div class="hist-row"><span class="hl">Cosecha</span><span class="hv neg">– USD ${fN((h.d||h).cosecha)}/ha</span></div>
+            ${(h.d||h).alqUSD>0?`<div class="hist-row"><span class="hl">Alquiler</span><span class="hv neg">– USD ${fN(h.alqUSD)}/ha</span></div>`:''}
+            <div class="hist-row"><span class="hl">Margen Bruto</span><span class="hv ${h.margenBruto>=0?'pos':'neg'}">USD ${fN(h.margenBruto)}/ha</span></div>
+            ${h.nota?`<div style="margin-top:6px;font-size:10px;color:var(--tm);font-style:italic;border-top:1px solid var(--bd);padding-top:5px">💬 ${h.nota}</div>`:''}
+          </div>
+          <div class="hist-card-footer">
+            <div>
+              <div class="hist-mn-label">Margen Neto</div>
+              <div class="hist-mn-val ${(h.d||h).margenNeto>=0?'pos':'neg'}">USD ${fN((h.d||h).margenNeto)}/ha</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:9px;color:var(--td)">Total campo</div>
+              <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:13px;${(h.d||h).margenNeto>=0?'color:var(--pos)':'color:var(--neg)'}">
+                USD ${fN((h.d||h).margenNeto * h.params.has)}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function eliminarHist(id) {
+  historial = historial.filter(h => h.id !== id);
+  renderTabs();
+  renderHistorial();
+}
+
+function limpiarHistorial() {
+  if (!confirm('¿Limpiar todo el historial?')) return;
+  historial = [];
+  renderTabs();
+  renderHistorial();
+}
+
+// ══════════════════════════════════
+// MODALS
+// ══════════════════════════════════
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-bg').forEach(bg =>
+  bg.addEventListener('click', e => { if (e.target===bg) bg.classList.remove('open'); }));
+
+// ══════════════════════════════════
+// HELPERS
+// ══════════════════════════════════
+function fN(v)  { return Math.round(Math.abs(v)).toLocaleString('es-AR'); }
+function fN2(v) { return (+v).toFixed(2); }
+function fK(v)  { return (v>=0?'':'-')+Math.round(Math.abs(v)).toLocaleString('es-AR'); }
+
+
+// ══════════════════════════════════
+// PDF / PRINT
+// ══════════════════════════════════
+function imprimirMargen() {
+  var c = getCultivo();
+  if (!c) { alert('Seleccioná un cultivo'); return; }
+  window.print();
+}
+
+function generarResumenHTML(snap) {
+  var d = snap.d || snap;
+  var p = snap.params;
+  var has = p.has;
+  var r0  = snap.rinde || p.rinde;
+  var MESES = ['','Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+  function fn(v){ return Math.round(Math.abs(v||0)).toLocaleString('es-AR'); }
+  function f2(v){ return (+v||0).toFixed(2); }
+  function clr(v){ return (v||0)>=0?'#2e8a3a':'#c0302a'; }
+
+  var dot = snap.dotColor || '#b07800';
+
+  var h = '<!DOCTYPE html><html><head><meta charset="UTF-8">';
+  h += '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">';
+  h += '<style>';
+  h += '*{box-sizing:border-box;margin:0;padding:0}';
+  h += 'body{font-family:Inter,sans-serif;font-size:12px;color:#1a1a14;background:#fff;padding:0}';
+  h += '.page{max-width:800px;margin:0 auto;padding:28px 32px}';
+  h += '.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;padding-bottom:14px;border-bottom:3px solid ' + dot + '}';
+  h += '.logo{font-family:Syne,sans-serif;font-size:22px;font-weight:800;color:#b07800;letter-spacing:-.02em}';
+  h += '.sub{font-size:10px;color:#6a6a58;letter-spacing:.1em;text-transform:uppercase;margin-top:2px}';
+  h += '.title-right{text-align:right}';
+  h += '.escenario{font-family:Syne,sans-serif;font-size:16px;font-weight:800;color:#1a1a14}';
+  h += '.fecha{font-size:10px;color:#6a6a58;margin-top:3px}';
+  h += '.nota{font-size:11px;color:#6a6a58;font-style:italic;margin-top:2px}';
+  h += '.section-title{font-family:Syne,sans-serif;font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#6a6a58;margin:16px 0 8px;padding-bottom:5px;border-bottom:1px solid #e8e8e2}';
+  h += '.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}';
+  h += '.kpi-grid2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}';
+  h += '.kpi{background:#f7f7f5;border:1px solid #deded6;border-radius:4px;padding:8px 10px}';
+  h += '.kl{font-size:8px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a58;font-weight:700;margin-bottom:3px}';
+  h += '.kv{font-family:Inter,sans-serif;font-weight:700;font-size:15px}';
+  h += '.ks{font-size:10px;color:#6a6a58;margin-top:2px}';
+  h += '.params-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}';
+  h += '.param-block{background:#f7f7f5;border:1px solid #deded6;border-radius:4px;padding:8px 10px}';
+  h += '.pb-title{font-family:Syne,sans-serif;font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#6a6a58;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid #deded6}';
+  h += '.pb-row{display:flex;justify-content:space-between;font-size:10px;padding:2px 0;border-bottom:1px solid #f0f0ec}';
+  h += '.pb-l{color:#6a6a58} .pb-v{font-weight:600}';
+  h += 'table{width:100%;border-collapse:collapse;font-size:11px;margin-bottom:16px}';
+  h += 'th{background:#f0f0ec;padding:5px 7px;text-align:left;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a58;font-weight:700;border-bottom:1px solid #deded6}';
+  h += 'th.r{text-align:right} td{padding:4px 7px;border-bottom:1px solid #f0f0ec} td.r{text-align:right}';
+  h += 'tr.total-row td{background:#f7f7f5;font-weight:700;border-top:1px solid #c8c8be}';
+  h += '.sens-tbl th,.sens-tbl td{padding:4px 6px;font-size:10px}';
+  h += '.hl-col{background:#fff8e8!important;font-weight:800}';
+  h += '.roi-box{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}';
+  h += '.roi-card{border:1px solid #deded6;border-radius:4px;padding:10px 12px}';
+  h += '.roi-label{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#6a6a58;font-weight:700;margin-bottom:4px}';
+  h += '.roi-val{font-family:Inter,sans-serif;font-weight:800;font-size:22px}';
+  h += '.roi-sub{font-size:10px;color:#6a6a58;margin-top:3px}';
+  h += '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}';
+  h += '</style></head><body><div class="page">';
+
+  // Header
+  h += '<div class="header">';
+  h += '<div><div class="logo">MÁRGENES</div><div class="sub">Campaña 25/26</div></div>';
+  h += '<div class="title-right">';
+  h += '<div class="escenario" style="color:' + dot + '">' + snap.nombre + '</div>';
+  h += '<div class="fecha">Generado: ' + snap.fecha + '</div>';
+  if (snap.nota) h += '<div class="nota">"' + snap.nota + '"</div>';
+  h += '</div></div>';
+
+  // KPIs fila 1
+  h += '<div class="section-title">Resultados Principales</div>';
+  h += '<div class="kpi-grid">';
+  var kpis1 = [
+    {l:'Ingreso Bruto', v:'USD '+fn(d.ingresoHa)+'/ha', s:'USD '+fn(d.ingresoHa*has)+' total', c:'#b07800'},
+    {l:'Margen Bruto',  v:'USD '+fn(d.margenBruto)+'/ha', s:'USD '+fn(d.margenBruto*has)+' total', c:clr(d.margenBruto)},
+    {l:'Margen Neto',   v:'USD '+fn(d.margenNeto)+'/ha', s:'USD '+fn(d.margenNeto*has)+' total', c:clr(d.margenNeto)},
+    {l:'ROI', v:f2(d.roiPct)+'%', s:'s/ cap. inmovilizado', c:clr(d.roiPct)},
+  ];
+  kpis1.forEach(function(k){
+    h += '<div class="kpi"><div class="kl">'+k.l+'</div>';
+    h += '<div class="kv" style="color:'+k.c+'">'+k.v+'</div>';
+    h += '<div class="ks">'+k.s+'</div></div>';
+  });
+  h += '</div>';
+
+  // KPIs fila 2
+  h += '<div class="kpi-grid2">';
+  var kpis2 = [
+    {l:'Precio', v:'USD '+p.precio+'/t', s:r0+' t/ha · '+has+' ha', c:'#1a1a14'},
+    {l:'Cap. Inmovilizado', v:'USD '+fn(d.capInmov), s:'Insumos + alq. previo', c:'#b06010'},
+    {l:'Cap. Cosecha', v:'USD '+fn(d.capCosecha), s:'GC + cos. + alq. entrega', c:'#b06010'},
+    {l:'Rto. Indiferencia', v:f2(d.rindeIndiferencia)+' t/ha', s:'Margen = 0', c:clr(r0 - d.rindeIndiferencia)},
+  ];
+  kpis2.forEach(function(k){
+    h += '<div class="kpi"><div class="kl">'+k.l+'</div>';
+    h += '<div class="kv" style="color:'+k.c+'">'+k.v+'</div>';
+    h += '<div class="ks">'+k.s+'</div></div>';
+  });
+  h += '</div>';
+
+  // Parámetros
+  h += '<div class="section-title">Parámetros</div>';
+  h += '<div class="params-grid">';
+  // Campo
+  h += '<div class="param-block"><div class="pb-title">Campo</div>';
+  [{l:'Superficie',v:has+' ha'},{l:'Rinde base',v:r0+' t/ha'},{l:'Precio',v:'USD '+p.precio+'/t'}].forEach(function(r){ h += '<div class="pb-row"><span class="pb-l">'+r.l+'</span><span class="pb-v">'+r.v+'</span></div>'; });
+  h += '</div>';
+  // GC
+  h += '<div class="param-block"><div class="pb-title">Gastos Comerc.</div>';
+  [{l:'Flete largo',v:'USD '+p.fleteL+'/t'},{l:'Flete corto',v:'USD '+p.fleteC+'/t'},{l:'Gtos. Cámara',v:'USD '+p.camara+'/t'},{l:'Comisión vta',v:p.comision+'% s/IB'},{l:'Sellado 1116C',v:p.sellado+'% s/IB'}].forEach(function(r){ h += '<div class="pb-row"><span class="pb-l">'+r.l+'</span><span class="pb-v">'+r.v+'</span></div>'; });
+  h += '</div>';
+  // Cosecha + alquiler
+  h += '<div class="param-block"><div class="pb-title">Cosecha y Alquiler</div>';
+  [{l:'Cosecha',v:'USD '+p.cosecha+'/ha'},{l:'Alquiler total',v:'USD '+fn(d.alqUSD)+'/ha'},{l:'Alq. inmovilizado',v:'USD '+fn(d.alqInmov)+'/ha'},{l:'Alq. cosecha',v:'USD '+fn(d.alqCosecha)+'/ha'}].forEach(function(r){ h += '<div class="pb-row"><span class="pb-l">'+r.l+'</span><span class="pb-v">'+r.v+'</span></div>'; });
+  h += '</div>';
+  h += '</div>';
+
+  // Costos directos
+  if (snap.labores && snap.labores.length) {
+    h += '<div class="section-title">Detalle de Costos Directos (' + snap.labores.length + ' ítems)</div>';
+    h += '<table><thead><tr><th>Período</th><th>Categoría</th><th>Producto / Labor</th><th class="r">Dosis/ha</th><th class="r">USD/und</th><th class="r">USD/ha</th><th class="r">USD Total</th></tr></thead><tbody>';
+    var totalCD = 0;
+    snap.labores.forEach(function(l){
+      var usdha = l.dosis * l.precio;
+      var usdtot = usdha * has;
+      totalCD += usdha;
+      var mes = (l.mes && l.anio) ? (MESES[l.mes]+' '+String(l.anio).slice(2)) : '—';
+      h += '<tr><td>'+mes+'</td><td>'+l.cat+'</td><td>'+l.nombre+'</td>';
+      h += '<td class="r">'+l.dosis+'</td><td class="r">'+l.precio+'</td>';
+      h += '<td class="r">'+f2(usdha)+'</td><td class="r">'+fn(usdtot)+'</td></tr>';
+    });
+    h += '<tr class="total-row"><td colspan="5">TOTAL COSTOS DIRECTOS</td>';
+    h += '<td class="r">USD '+fn(totalCD)+'/ha</td><td class="r">USD '+fn(totalCD*has)+'</td></tr>';
+    h += '</tbody></table>';
+  }
+
+  // Sensibilidad
+  h += '<div class="section-title">Análisis de Sensibilidad por Rinde</div>';
+  var step = r0 <= 5 ? 0.5 : 1;
+  var rindes = [];
+  for (var r = Math.max(0.5, +(r0-2*step).toFixed(1)); r <= +(r0+2*step+.001).toFixed(1); r = +(r+step).toFixed(1)) rindes.push(r);
+  h += '<table class="sens-tbl"><thead><tr><th>Concepto</th>';
+  rindes.forEach(function(r){ h += '<th class="r'+(r===r0?' hl-col':'')+'">'+r+' t/ha</th>'; });
+  h += '</tr></thead><tbody>';
+  var sensRows = [
+    {label:'Ing. Bruto', fn:function(r){ return fn(p.precio*r); }},
+    {label:'Gtos. Com.', fn:function(r){ var ib=p.precio*r; return fn((p.fleteL+p.fleteC+p.parit+p.camara)*r + ib*(p.comision+p.sellado)/100); }},
+    {label:'Costos Dir.', fn:function(r){ return fn(d.cdTotal); }},
+    {label:'Mg. Bruto', fn:function(r){ var ib=p.precio*r; var gc=(p.fleteL+p.fleteC+p.parit+p.camara)*r+ib*(p.comision+p.sellado)/100; return fn(ib-gc-d.cdTotal); }, bold:true},
+    {label:'Mg. Neto', fn:function(r){ var ib=p.precio*r; var gc=(p.fleteL+p.fleteC+p.parit+p.camara)*r+ib*(p.comision+p.sellado)/100; return fn(ib-gc-d.cdTotal-p.cosecha-d.alqUSD); }, bold:true, color:true},
+  ];
+  sensRows.forEach(function(row){
+    h += '<tr>';
+    h += '<td style="font-weight:'+(row.bold?'700':'400')+';color:#6a6a58">'+row.label+'</td>';
+    rindes.forEach(function(r){
+      var v = row.fn(r);
+      var isHL = r===r0;
+      h += '<td class="r'+(isHL?' hl-col':'')+'" style="font-weight:'+(row.bold||isHL?'700':'400')+'">'+ v +'</td>';
+    });
+    h += '</tr>';
+  });
+  h += '</tbody></table>';
+
+  // Footer
+  h += '<div style="margin-top:20px;padding-top:10px;border-top:1px solid #e8e8e2;display:flex;justify-content:space-between;font-size:9px;color:#a0a090">';
+  h += '<span>Márgenes Agrícolas · Campaña 25/26</span>';
+  h += '<span>' + snap.nombre + ' · ' + snap.fecha + '</span>';
+  h += '</div>';
+
+  h += '</div></body></html>';
+  return h;
+}
+
+
+
+function imprimirMargenActivo() {
+  var c = getCultivo();
+  if (!c) return;
+  var d = calcAt(c, c.params.rinde);
+  var snap = {
+    nombre: c.nombre,
+    nota: '',
+    fecha: new Date().toLocaleString('es-AR'),
+    color: c.color,
+    dotColor: COLORES[c.color].dot,
+    cultivo: c.nombre,
+    params: c.params,
+    labores: c.labores,
+    cuotas: c.cuotas || [],
+    rinde: c.params.rinde,
+    d: d,
+  };
+  var w = window.open('', '_blank', 'width=900,height=700');
+  var html = generarResumenHTML(snap);
+  w.document.write(html);
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 700);
+}
+function imprimirSnapshot(snapId) {
+  var snap = historial.find(function(h){ return h.id === snapId; });
+  if (!snap) return;
+  var w = window.open('', '_blank', 'width=900,height=700');
+  var html = '<!DOCTYPE html><html><head><title>' + snap.nombre + '</title>';
+  html += '<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">';
+  html += '</head><body style="background:#fff;margin:0">';
+  html += generarResumenHTML(snap);
+  html += '</body></html>';
+  w.document.write(html);
+  w.document.close();
+  setTimeout(function(){ w.print(); }, 600);
+}
+
+
+// ══════════════════════════════════
+// PERSISTENCIA LOCAL (localStorage)
+// ══════════════════════════════════
+var STORAGE_KEY = 'margenes_agricolas_v2';
+
+function guardarEstado() {
+  try {
+    var estado = {
+      v: 2,
+      ts: Date.now(),
+      cultivos: cultivos,
+      activoId: activoId,
+      historial: historial,
+      INSUMOS: INSUMOS,
+      insNextId: insNextId,
+      cId: cId,
+      lId: lId,
+      qId: qId,
+      hId: hId,
+    };
+    var json = JSON.stringify(estado);
+    localStorage.setItem(STORAGE_KEY, json);
+    // Actualizar indicador visual
+    var badge = document.getElementById('headerBadge');
+    if (badge) {
+      var now = new Date();
+      var t = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+      badge.title = 'Guardado ' + t;
+    }
+  } catch(e) {
+    console.warn('No se pudo guardar:', e);
+    alert('Atención: no se pudo guardar el estado. El almacenamiento puede estar lleno.');
+  }
+}
+
+function cargarEstado() {
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return false;
+    var estado = JSON.parse(raw);
+    if (!estado || !estado.cultivos || !estado.cultivos.length) return false;
+    cultivos   = estado.cultivos;
+    activoId   = estado.activoId  || (cultivos[0] ? cultivos[0].id : null);
+    historial  = estado.historial || [];
+    INSUMOS    = estado.INSUMOS   || INSUMOS;
+    insNextId  = estado.insNextId || insNextId;
+    cId        = estado.cId       || cId;
+    lId        = estado.lId       || lId;
+    qId        = estado.qId       || qId;
+    hId        = estado.hId       || hId;
+    console.log('Estado cargado:', cultivos.length, 'cultivos,', INSUMOS.length, 'insumos');
+    return true;
+  } catch(e) {
+    console.warn('No se pudo cargar estado:', e);
+    return false;
+  }
+}
+
+function limpiarEstado() {
+  if (!confirm('¿Borrar todos los datos guardados y volver al estado inicial?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+// ══════════════════════════════════
+// INIT
+// ══════════════════════════════════
+// Cargar estado guardado o usar el inicial (Maíz Tardío)
+var estadoCargado = cargarEstado();
+if (!estadoCargado) {
+  // Primera vez: cargar cultivo inicial
+  cultivos.push(mkCultivo('Maíz Tardío', 'maiz', 170, 8.5, MAIZ_LAB));
+  activoId = cultivos[0].id;
+}
+renderTabs();
+renderMain();
+recalc();
+// Fallback: guardar cada 5 segundos por si algún evento se escapa
+setInterval(guardarEstado, 5000);
+function limpiarEstado() {
+  if (!confirm('¿Borrar todos los datos guardados y volver al estado inicial?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+// ══════════════════════════════════
+// INIT
+// ══════════════════════════════════
+// Cargar estado guardado o usar el inicial (Maíz Tardío)
+var estadoCargado = cargarEstado();
+if (!estadoCargado) {
+  // Primera vez: cargar cultivo inicial
+  cultivos.push(mkCultivo('Maíz Tardío', 'maiz', 170, 8.5, MAIZ_LAB));
+  activoId = cultivos[0].id;
+}
+renderTabs();
+renderMain();
+recalc();
+// Fallback: guardar cada 5 segundos por si algún evento se escapa
+setInterval(guardarEstado, 5000);
+</script>
+</body>
+</html>
